@@ -1,0 +1,2713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Optometric Clinical Record Card - Modern AI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-light: #38bdf8;
+            --secondary: #6366f1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+            padding: 20px;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 32px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, var(--primary) 100%);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+
+        h1 {
+            color: var(--gray-900);
+            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2);
+        }
+
+        .ai-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .subtitle {
+            color: var(--gray-600);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 24px;
+            padding: 20px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            background: var(--gray-50);
+            transition: all 0.2s ease;
+        }
+
+        .section:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--gray-300);
+        }
+
+        .section-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .form-row.three-col {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+
+        .form-row.four-col {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: white;
+            color: var(--gray-900);
+        }
+
+        input:hover,
+        textarea:hover,
+        select:hover {
+            border-color: var(--gray-400);
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Modern AI Input Design */
+        .smart-input {
+            position: relative;
+        }
+
+        .smart-input input,
+        .smart-input textarea {
+            padding-right: 44px;
+        }
+
+        .smart-assist-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: var(--radius);
+            background: white;
+            color: var(--gray-400);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        textarea ~ .smart-assist-btn {
+            top: 12px;
+            transform: none;
+        }
+
+        .smart-assist-btn:hover {
+            color: var(--primary);
+            background: var(--gray-50);
+            box-shadow: var(--shadow);
+        }
+
+        .smart-assist-btn.active {
+            color: white;
+            background: var(--primary);
+            box-shadow: 0 2px 4px rgba(14, 165, 233, 0.3);
+        }
+
+        .smart-assist-btn.recording {
+            background: var(--danger);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .smart-assist-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Smart Suggestions */
+        .smart-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .suggestion-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .suggestion-item:hover,
+        .suggestion-item.selected {
+            background: var(--gray-50);
+            color: var(--primary);
+        }
+
+        .suggestion-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-left: 8px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .quick-action {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--gray-700);
+        }
+
+        .quick-action:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--gray-50);
+        }
+
+        /* Prescription Table Modern */
+        .rx-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 12px;
+            overflow: hidden;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .rx-table th,
+        .rx-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-right: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .rx-table th:last-child,
+        .rx-table td:last-child {
+            border-right: none;
+        }
+
+        .rx-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rx-table th {
+            background: var(--gray-100);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            color: var(--gray-700);
+        }
+
+        .rx-table td {
+            background: white;
+        }
+
+        .rx-input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rx-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 4px;
+            width: 100%;
+        }
+
+        .rx-input:focus {
+            outline: none;
+            background: var(--gray-50);
+            border-radius: 4px;
+        }
+
+        .rx-sign-toggle {
+            position: absolute;
+            right: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .rx-sign {
+            width: 16px;
+            height: 14px;
+            border: 1px solid var(--gray-300);
+            background: white;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            color: var(--gray-500);
+        }
+
+        .rx-sign:first-child {
+            border-radius: 3px 3px 0 0;
+        }
+
+        .rx-sign:last-child {
+            border-radius: 0 0 3px 3px;
+            border-top: none;
+        }
+
+        .rx-sign:hover {
+            background: var(--gray-50);
+        }
+
+        .rx-sign.active.plus {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .rx-sign.active.minus {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        /* Smart Dispensing Calculator */
+        .calculator-panel {
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
+        }
+
+        .calculator-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .calculator-header svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .calc-result {
+            background: white;
+            padding: 12px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .calc-result-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+        }
+
+        .calc-result-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .calc-alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 12px;
+            background: var(--warning);
+            background-opacity: 0.1;
+            border: 1px solid var(--warning);
+            border-radius: var(--radius);
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .calc-alert.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .calc-alert.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .calc-alert svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--gray-600);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-700);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        /* Checkboxes and Radio */
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* File Upload Modern */
+        .file-upload-area {
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--gray-50);
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary);
+            background: white;
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary);
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .file-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .file-item {
+            position: relative;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .file-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .file-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .file-item:hover .file-remove {
+            opacity: 1;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .section {
+                padding: 16px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row.four-col {
+                grid-template-columns: 1fr;
+            }
+
+            .smart-input input,
+            .smart-input textarea {
+                padding-right: 40px;
+            }
+
+            .smart-assist-btn {
+                width: 28px;
+                height: 28px;
+            }
+
+            .smart-assist-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .rx-table {
+                font-size: 12px;
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .rx-table table {
+                min-width: 500px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .calculator-panel {
+                padding: 16px;
+            }
+
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .addon-option {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+
+            .addon-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .addon-row input[type="number"] {
+                text-align: left;
+            }
+
+            .other-addon {
+                padding: 10px;
+            }
+
+            .cost-summary {
+                margin: 0 -8px;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .cost-line {
+                font-size: 13px;
+            }
+
+            .cost-line.total {
+                font-size: 16px;
+            }
+
+            .payment-status {
+                font-size: 13px;
+                padding: 10px 12px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+
+            .smart-assist-btn,
+            .quick-actions,
+            .button-group,
+            .file-remove,
+            .rx-sign-toggle,
+            .ai-badge {
+                display: none !important;
+            }
+
+            .section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Dispensing Order Print Styles */
+        .order-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: white;
+        }
+
+        .order-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #333;
+        }
+
+        .order-header h1 {
+            font-size: 32px;
+            margin: 0 0 20px;
+            color: #333;
+        }
+
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .order-section {
+            margin-bottom: 30px;
+        }
+
+        .order-section h2 {
+            font-size: 18px;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .order-details div {
+            padding: 5px 0;
+        }
+
+        .order-summary {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .order-summary td {
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .order-summary .amount {
+            text-align: right;
+        }
+
+        .order-summary .discount {
+            color: #28a745;
+        }
+
+        .order-summary .total-row {
+            border-top: 2px solid #333;
+            border-bottom: 1px solid #333;
+            font-size: 16px;
+        }
+
+        .order-summary .balance-row {
+            border-bottom: 2px solid #333;
+            font-size: 16px;
+        }
+
+        .order-summary .balance-due {
+            color: #dc3545;
+        }
+
+        .order-footer {
+            margin-top: 50px;
+        }
+
+        .order-notes {
+            margin-bottom: 40px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            min-height: 60px;
+        }
+
+        .order-signature {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .order-signature > div {
+            flex: 1;
+            text-align: center;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid #333;
+            margin-bottom: 10px;
+            height: 40px;
+        }
+
+        .order-signature p {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+
+        @media print {
+            .order-container {
+                padding: 20px;
+            }
+            
+            #dispensingOrderPrint {
+                display: block !important;
+            }
+            
+            body > *:not(#dispensingOrderPrint) {
+                display: none !important;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--gray-300);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-900);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--radius);
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: var(--gray-900);
+        }
+
+        .smart-assist-btn:hover .tooltip {
+            opacity: 1;
+        }
+
+        /* Warning Notice */
+        .warning-notice {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid var(--warning);
+            color: #92400e;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .warning-notice svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+    <div class="container" id="recordCard">
+        <h1>
+            UK Optometric Clinical Record Card
+            <span class="ai-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                AI-Enhanced
+            </span>
+        </h1>
+        <p class="subtitle">Intelligent form with voice input and professional terminology assistance</p>
+        
+        <div class="warning-notice">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            <div>
+                This tool does not store data. Please download or print before closing.<br>
+                AI assistance converts common language to UK optometry terminology.<br>
+                Pricing calculator allows custom prices for full practice flexibility.
+            </div>
+        </div>
+
+        <!-- Patient Details -->
+        <div class="section">
+            <h2 class="section-header">Patient Details</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <div class="smart-input">
+                        <input type="text" id="name" name="name">
+                        <button class="smart-assist-btn" data-field="name">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                            <span class="tooltip">Voice & AI assist</span>
+                        </button>
+                        <div class="smart-suggestions" id="name-suggestions"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" onchange="calculateAge()">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="text" id="age" name="age" readonly style="background: var(--gray-50);">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <div class="smart-input">
+                    <textarea id="address" name="address"></textarea>
+                    <button class="smart-assist-btn" data-field="address">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        </svg>
+                        <span class="tooltip">Voice & AI assist</span>
+                    </button>
+                </div>
+            </div>
+            <div class="form-row three-col">
+                <div class="form-group">
+                    <label for="telephone">Telephone</label>
+                    <div class="smart-input">
+                        <input type="tel" id="telephone" name="telephone">
+                        <button class="smart-assist-btn" data-field="telephone">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="nhsNumber">NHS Number</label>
+                    <div class="smart-input">
+                        <input type="text" id="nhsNumber" name="nhsNumber">
+                        <button class="smart-assist-btn" data-field="nhsNumber">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="tooltip">Format NHS number</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="idReference">ID Reference</label>
+                    <div class="smart-input">
+                        <input type="text" id="idReference" name="idReference" placeholder="Patient ID">
+                        <button class="smart-assist-btn" data-field="idReference">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="occupation">Occupation</label>
+                    <div class="smart-input">
+                        <input type="text" id="occupation" name="occupation">
+                        <button class="smart-assist-btn" data-field="occupation">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </button>
+                        <div class="smart-suggestions" id="occupation-suggestions"></div>
+                    </div>
+                    <div class="quick-actions" id="occupation-quick">
+                        <span class="quick-action" data-value="VDU user">VDU user</span>
+                        <span class="quick-action" data-value="HGV driver">Driver</span>
+                        <span class="quick-action" data-value="Retired">Retired</span>
+                        <span class="quick-action" data-value="Student">Student</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="insuranceProvider">Insurance Provider</label>
+                    <select id="insuranceProvider" name="insuranceProvider">
+                        <option value="">None / Private</option>
+                        <option value="NHS">NHS</option>
+                        <option value="Bupa">Bupa</option>
+                        <option value="AXA PPP">AXA PPP</option>
+                        <option value="Aviva">Aviva</option>
+                        <option value="Simply Health">Simply Health</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reason for Visit -->
+        <div class="section">
+            <h2 class="section-header">Reason for Visit</h2>
+            <div class="form-group">
+                <label for="reasonVisit">Presenting Complaint</label>
+                <div class="smart-input">
+                    <textarea id="reasonVisit" name="reasonVisit" placeholder="Type naturally - AI will convert to professional terms"></textarea>
+                    <button class="smart-assist-btn" data-field="reasonVisit">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        </svg>
+                        <span class="tooltip">Voice & AI assist</span>
+                    </button>
+                    <div class="smart-suggestions" id="reasonVisit-suggestions"></div>
+                </div>
+                <div class="quick-actions" id="reasonVisit-quick">
+                    <span class="quick-action" data-value="Routine eye examination">Routine</span>
+                    <span class="quick-action" data-value="Reduced VA - gradual onset">Blurred vision</span>
+                    <span class="quick-action" data-value="Headaches - ocular origin suspected">Headaches</span>
+                    <span class="quick-action" data-value="Presbyopic symptoms">Reading difficulty</span>
+                    <span class="quick-action" data-value="VDU related symptoms">Computer strain</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical & Ocular History -->
+        <div class="section">
+            <h2 class="section-header">Medical & Ocular History</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="generalHealth">General Health (GH)</label>
+                    <div class="smart-input">
+                        <input type="text" id="generalHealth" name="generalHealth">
+                        <button class="smart-assist-btn" data-field="generalHealth">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <div class="smart-suggestions" id="generalHealth-suggestions"></div>
+                    </div>
+                    <div class="quick-actions" id="generalHealth-quick">
+                        <span class="quick-action" data-value="Good">Good</span>
+                        <span class="quick-action" data-value="T2DM">Diabetes</span>
+                        <span class="quick-action" data-value="Hypertension">High BP</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="medication">Medication (MED)</label>
+                    <div class="smart-input">
+                        <input type="text" id="medication" name="medication">
+                        <button class="smart-assist-btn" data-field="medication">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <div class="smart-suggestions" id="medication-suggestions"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pastOcularHistory">Past Ocular History (POH)</label>
+                    <div class="smart-input">
+                        <input type="text" id="pastOcularHistory" name="pastOcularHistory">
+                        <button class="smart-assist-btn" data-field="pastOcularHistory">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <div class="smart-suggestions" id="pastOcularHistory-suggestions"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="familyOcularHistory">Family Ocular History (FOH)</label>
+                    <div class="smart-input">
+                        <input type="text" id="familyOcularHistory" name="familyOcularHistory">
+                        <button class="smart-assist-btn" data-field="familyOcularHistory">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <div class="smart-suggestions" id="familyOcularHistory-suggestions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prescription Details -->
+        <div class="section">
+            <h2 class="section-header">Prescription Details</h2>
+            <h3 style="margin-top: 12px; margin-bottom: 8px; font-size: 15px; color: var(--gray-700);">Current Prescription</h3>
+            <table class="rx-table">
+                <thead>
+                    <tr>
+                        <th>Eye</th>
+                        <th>Sphere</th>
+                        <th>Cylinder</th>
+                        <th>Axis</th>
+                        <th>Add</th>
+                        <th>Prism</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RE</td>
+                        <td>
+                            <div class="rx-input-group">
+                                <input type="text" id="sphereRE" name="sphereRE" class="rx-input">
+                                <div class="rx-sign-toggle">
+                                    <button class="rx-sign plus" data-field="sphereRE" data-value="+">+</button>
+                                    <button class="rx-sign minus" data-field="sphereRE" data-value="-">−</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="rx-input-group">
+                                <input type="text" id="cylRE" name="cylRE" class="rx-input">
+                                <div class="rx-sign-toggle">
+                                    <button class="rx-sign plus" data-field="cylRE" data-value="+">+</button>
+                                    <button class="rx-sign minus" data-field="cylRE" data-value="-">−</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="text" id="axisRE" name="axisRE" class="rx-input"></td>
+                        <td>
+                            <div class="rx-input-group">
+                                <input type="text" id="addRE" name="addRE" class="rx-input">
+                                <div class="rx-sign-toggle">
+                                    <button class="rx-sign plus" data-field="addRE" data-value="+">+</button>
+                                    <button class="rx-sign minus" data-field="addRE" data-value="-">−</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="text" id="prismRE" name="prismRE" class="rx-input" placeholder="e.g. 2Δ BU"></td>
+                    </tr>
+                    <tr>
+                        <td>LE</td>
+                        <td>
+                            <div class="rx-input-group">
+                                <input type="text" id="sphereLE" name="sphereLE" class="rx-input">
+                                <div class="rx-sign-toggle">
+                                    <button class="rx-sign plus" data-field="sphereLE" data-value="+">+</button>
+                                    <button class="rx-sign minus" data-field="sphereLE" data-value="-">−</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="rx-input-group">
+                                <input type="text" id="cylLE" name="cylLE" class="rx-input">
+                                <div class="rx-sign-toggle">
+                                    <button class="rx-sign plus" data-field="cylLE" data-value="+">+</button>
+                                    <button class="rx-sign minus" data-field="cylLE" data-value="-">−</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="text" id="axisLE" name="axisLE" class="rx-input"></td>
+                        <td>
+                            <div class="rx-input-group">
+                                <input type="text" id="addLE" name="addLE" class="rx-input">
+                                <div class="rx-sign-toggle">
+                                    <button class="rx-sign plus" data-field="addLE" data-value="+">+</button>
+                                    <button class="rx-sign minus" data-field="addLE" data-value="-">−</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="text" id="prismLE" name="prismLE" class="rx-input" placeholder="e.g. 2Δ BD"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Clinical Observations -->
+        <div class="section">
+            <h2 class="section-header">Clinical Observations</h2>
+            <div class="form-row three-col">
+                <div class="form-group">
+                    <label for="vaRE">VA - RE</label>
+                    <div class="smart-input">
+                        <input type="text" id="vaRE" name="vaRE">
+                        <button class="smart-assist-btn" data-field="vaRE">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="vaLE">VA - LE</label>
+                    <div class="smart-input">
+                        <input type="text" id="vaLE" name="vaLE">
+                        <button class="smart-assist-btn" data-field="vaLE">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="vaBIN">VA - BIN</label>
+                    <input type="text" id="vaBIN" name="vaBIN">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="iopRE">IOP - RE</label>
+                    <div class="smart-input">
+                        <input type="text" id="iopRE" name="iopRE">
+                        <button class="smart-assist-btn" data-field="iopRE">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="iopLE">IOP - LE</label>
+                    <div class="smart-input">
+                        <input type="text" id="iopLE" name="iopLE">
+                        <button class="smart-assist-btn" data-field="iopLE">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="iopTime">Time</label>
+                    <input type="time" id="iopTime" name="iopTime">
+                </div>
+                <div class="form-group">
+                    <label for="tonometryMethod">Method</label>
+                    <select id="tonometryMethod" name="tonometryMethod">
+                        <option value="">Select...</option>
+                        <option value="NCT">NCT</option>
+                        <option value="Goldmann">Goldmann</option>
+                        <option value="iCare">iCare</option>
+                        <option value="Perkins">Perkins</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="slitLamp">Slit Lamp Findings</label>
+                    <div class="smart-input">
+                        <textarea id="slitLamp" name="slitLamp"></textarea>
+                        <button class="smart-assist-btn" data-field="slitLamp">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <div class="smart-suggestions" id="slitLamp-suggestions"></div>
+                    </div>
+                    <div class="quick-actions" id="slitLamp-quick">
+                        <span class="quick-action" data-value="Clear cornea, deep and quiet AC, clear lens OU">NAD</span>
+                        <span class="quick-action" data-value="Grade 1 NS OU">Early cataract</span>
+                        <span class="quick-action" data-value="Meibomian gland dysfunction">MGD</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fundusRE">Fundus - RE</label>
+                    <div class="smart-input">
+                        <input type="text" id="fundusRE" name="fundusRE">
+                        <button class="smart-assist-btn" data-field="fundusRE">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <div class="smart-suggestions" id="fundusRE-suggestions"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fundusLE">Fundus - LE</label>
+                    <div class="smart-input">
+                        <input type="text" id="fundusLE" name="fundusLE">
+                        <button class="smart-assist-btn" data-field="fundusLE">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <div class="smart-suggestions" id="fundusLE-suggestions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dispensing Section with Smart Calculator -->
+        <div class="section">
+            <h2 class="section-header">Dispensing & Smart Calculator</h2>
+            <div class="form-row four-col">
+                <div class="form-group">
+                    <label for="prescriptionType">Prescription Type</label>
+                    <select id="prescriptionType" name="prescriptionType" onchange="updateDispensingCalculator()">
+                        <option value="">Select...</option>
+                        <option value="SV">Single Vision</option>
+                        <option value="Bifocal">Bifocal</option>
+                        <option value="Varifocal">Varifocal</option>
+                        <option value="Occupational">Occupational</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="frameChoice">Frame Choice</label>
+                    <input type="text" id="frameChoice" name="frameChoice" placeholder="Brand, model, color">
+                </div>
+                <div class="form-group">
+                    <label for="frameType">Frame Type</label>
+                    <select id="frameType" name="frameType">
+                        <option value="">Select type...</option>
+                        <option value="metal">Metal</option>
+                        <option value="plastic">Plastic</option>
+                        <option value="titanium">Titanium</option>
+                        <option value="memory-metal">Memory Metal</option>
+                        <option value="rimless">Rimless</option>
+                        <option value="semi-rimless">Semi-Rimless</option>
+                        <option value="sports">Sports</option>
+                        <option value="safety">Safety</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lensType">Lens Details</label>
+                    <input type="text" id="lensType" name="lensType" placeholder="e.g. 1.67 index, Varifocal Elite">
+                </div>
+            </div>
+            
+            <!-- PD Measurements -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pdDistance">Distance PD (mm)</label>
+                    <input type="number" id="pdDistance" name="pdDistance" step="0.5" onchange="updateDispensingCalculator()">
+                </div>
+                <div class="form-group">
+                    <label for="pdNear">Near PD (mm)</label>
+                    <input type="number" id="pdNear" name="pdNear" step="0.5" onchange="updateDispensingCalculator()">
+                </div>
+                <div class="form-group">
+                    <label for="bvd">BVD (mm)</label>
+                    <input type="number" id="bvd" name="bvd" value="12" step="1" onchange="updateDispensingCalculator()">
+                </div>
+            </div>
+
+            <!-- Frame Measurements -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="frameA">Frame A (mm)</label>
+                    <input type="number" id="frameA" name="frameA" step="1" onchange="updateDispensingCalculator()">
+                </div>
+                <div class="form-group">
+                    <label for="frameB">Frame B (mm)</label>
+                    <input type="number" id="frameB" name="frameB" step="1" onchange="updateDispensingCalculator()">
+                </div>
+                <div class="form-group">
+                    <label for="frameDBL">Frame DBL (mm)</label>
+                    <input type="number" id="frameDBL" name="frameDBL" step="1" onchange="updateDispensingCalculator()">
+                </div>
+            </div>
+
+            <!-- Heights -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="heightRE">Height RE (mm)</label>
+                    <input type="number" id="heightRE" name="heightRE" step="0.5" onchange="updateDispensingCalculator()">
+                </div>
+                <div class="form-group">
+                    <label for="heightLE">Height LE (mm)</label>
+                    <input type="number" id="heightLE" name="heightLE" step="0.5" onchange="updateDispensingCalculator()">
+                </div>
+            </div>
+
+            <!-- Smart Calculator Panel -->
+            <div class="calculator-panel" id="calculatorPanel" style="display: none;">
+                <div class="calculator-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    Smart Dispensing Calculator
+                </div>
+                
+                <div class="calc-grid">
+                    <div class="calc-result">
+                        <div class="calc-result-label">Monocular PDs</div>
+                        <div class="calc-result-value" id="calcMonoPD">RE: -- / LE: --</div>
+                    </div>
+                    <div class="calc-result">
+                        <div class="calc-result-label">Near PD Calculated</div>
+                        <div class="calc-result-value" id="calcNearPD">-- mm</div>
+                    </div>
+                    <div class="calc-result">
+                        <div class="calc-result-label">Minimum Blank Size</div>
+                        <div class="calc-result-value" id="calcBlankSize">-- mm</div>
+                    </div>
+                    <div class="calc-result">
+                        <div class="calc-result-label">Decentration</div>
+                        <div class="calc-result-value" id="calcDecentration">RE: -- / LE: --</div>
+                    </div>
+                </div>
+
+                <div id="bvdAdjustment" style="display: none; margin-top: 16px;">
+                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--gray-700);">BVD Power Adjustment</h4>
+                    <div class="calc-grid">
+                        <div class="calc-result">
+                            <div class="calc-result-label">Adjusted Power RE</div>
+                            <div class="calc-result-value" id="calcBvdRE">--</div>
+                        </div>
+                        <div class="calc-result">
+                            <div class="calc-result-label">Adjusted Power LE</div>
+                            <div class="calc-result-value" id="calcBvdLE">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="prismCalculation" style="display: none; margin-top: 16px;">
+                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--gray-700);">Prism by Decentration</h4>
+                    <div class="calc-grid">
+                        <div class="calc-result">
+                            <div class="calc-result-label">Induced Prism RE</div>
+                            <div class="calc-result-value" id="calcPrismRE">--</div>
+                        </div>
+                        <div class="calc-result">
+                            <div class="calc-result-label">Induced Prism LE</div>
+                            <div class="calc-result-value" id="calcPrismLE">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="calcAlerts"></div>
+            </div>
+        </div>
+
+        <!-- Financial Calculator Section -->
+        <div class="section">
+            <h2 class="section-header">Pricing & Payment Calculator</h2>
+            
+            <!-- Frame and Lens Costs -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="frameCost">Frame Cost (£)</label>
+                    <input type="number" id="frameCost" name="frameCost" step="0.01" placeholder="0.00" onchange="calculateTotal()">
+                </div>
+                <div class="form-group">
+                    <label for="lensTypeSelect">Lens Type</label>
+                    <select id="lensTypeSelect" name="lensTypeSelect" onchange="updateLensCost()">
+                        <option value="">Select lens type...</option>
+                        <option value="sv-standard" data-cost="49">Single Vision Standard (£49)</option>
+                        <option value="sv-thin" data-cost="89">Single Vision 1.6 Index (£89)</option>
+                        <option value="sv-ultrathin" data-cost="129">Single Vision 1.67 Index (£129)</option>
+                        <option value="sv-extra" data-cost="169">Single Vision 1.74 Index (£169)</option>
+                        <option value="bifocal" data-cost="99">Bifocal Standard (£99)</option>
+                        <option value="varifocal-standard" data-cost="149">Varifocal Standard (£149)</option>
+                        <option value="varifocal-premium" data-cost="249">Varifocal Premium (£249)</option>
+                        <option value="varifocal-elite" data-cost="349">Varifocal Elite (£349)</option>
+                        <option value="occupational" data-cost="199">Occupational Progressive (£199)</option>
+                        <option value="custom">Custom Price</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lensCost">Lens Cost (£)</label>
+                    <input type="number" id="lensCost" name="lensCost" step="0.01" placeholder="0.00" onchange="calculateTotal()">
+                </div>
+            </div>
+
+            <!-- Lens Add-ons -->
+            <div class="form-group">
+                <label>Lens Coatings & Add-ons</label>
+                <p style="font-size: 13px; color: var(--gray-600); margin: 4px 0 12px;">Select coatings and enter your practice prices</p>
+                <div class="addons-container">
+                    <!-- Coating 1 -->
+                    <div class="addon-row">
+                        <select id="coating1" name="coating1" onchange="calculateTotal()">
+                            <option value="">Select coating...</option>
+                            <option value="ar-standard">Anti-Reflective Standard</option>
+                            <option value="ar-premium">Anti-Reflective Premium</option>
+                            <option value="ar-superhydrophobic">Super Hydrophobic AR</option>
+                            <option value="blue-filter">Blue Light Filter</option>
+                            <option value="blue-ar-combo">Blue Light + AR Combo</option>
+                            <option value="scratch-resistant">Scratch Resistant</option>
+                            <option value="uv-protection">UV Protection</option>
+                            <option value="mirror">Mirror Coating</option>
+                        </select>
+                        <input type="number" id="coating1Price" name="coating1Price" step="0.01" placeholder="£0.00" onchange="calculateTotal()">
+                    </div>
+                    
+                    <!-- Coating 2 -->
+                    <div class="addon-row">
+                        <select id="coating2" name="coating2" onchange="calculateTotal()">
+                            <option value="">Select photochromic...</option>
+                            <option value="transitions-gen8">Transitions Gen 8</option>
+                            <option value="transitions-xtractive">Transitions XTRActive</option>
+                            <option value="transitions-vantage">Transitions Vantage</option>
+                            <option value="photofusion">PhotoFusion</option>
+                            <option value="sensity">Sensity</option>
+                            <option value="polarised">Polarised</option>
+                            <option value="drivewear">Drivewear</option>
+                        </select>
+                        <input type="number" id="coating2Price" name="coating2Price" step="0.01" placeholder="£0.00" onchange="calculateTotal()">
+                    </div>
+                    
+                    <!-- Tint -->
+                    <div class="addon-row">
+                        <select id="tint" name="tint" onchange="calculateTotal()">
+                            <option value="">Select tint...</option>
+                            <option value="tint-25">25% Tint</option>
+                            <option value="tint-50">50% Tint</option>
+                            <option value="tint-75">75% Tint</option>
+                            <option value="tint-85">85% Tint</option>
+                            <option value="gradient">Gradient Tint</option>
+                            <option value="fashion-tint">Fashion Tint</option>
+                            <option value="sun-tint">Sun Tint</option>
+                        </select>
+                        <input type="number" id="tintPrice" name="tintPrice" step="0.01" placeholder="£0.00" onchange="calculateTotal()">
+                    </div>
+                    
+                    <!-- Other Add-on 1 -->
+                    <div class="addon-row other-addon">
+                        <input type="text" id="otherAddon1" name="otherAddon1" placeholder="Other add-on (e.g. Prism, Special treatment)" onchange="calculateTotal()">
+                        <input type="number" id="otherAddon1Price" name="otherAddon1Price" step="0.01" placeholder="£0.00" onchange="calculateTotal()">
+                    </div>
+                    
+                    <!-- Other Add-on 2 -->
+                    <div class="addon-row other-addon">
+                        <input type="text" id="otherAddon2" name="otherAddon2" placeholder="Other add-on" onchange="calculateTotal()">
+                        <input type="number" id="otherAddon2Price" name="otherAddon2Price" step="0.01" placeholder="£0.00" onchange="calculateTotal()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discount and Voucher -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="discount">Discount (%)</label>
+                    <input type="number" id="discount" name="discount" min="0" max="100" step="1" placeholder="0" onchange="calculateTotal()">
+                </div>
+                <div class="form-group">
+                    <label for="voucherType">NHS/Insurance Voucher</label>
+                    <select id="voucherType" name="voucherType" onchange="applyVoucher()">
+                        <option value="">None</option>
+                        <option value="nhs-a" data-value="39.10">NHS Voucher A (£39.10)</option>
+                        <option value="nhs-b" data-value="59.30">NHS Voucher B (£59.30)</option>
+                        <option value="nhs-c" data-value="86.50">NHS Voucher C (£86.50)</option>
+                        <option value="nhs-d" data-value="138.10">NHS Voucher D (£138.10)</option>
+                        <option value="nhs-e" data-value="204.50">NHS Voucher E (£204.50)</option>
+                        <option value="nhs-f" data-value="70.30">NHS Voucher F (£70.30)</option>
+                        <option value="nhs-g" data-value="96.80">NHS Voucher G (£96.80)</option>
+                        <option value="nhs-h" data-value="135.70">NHS Voucher H (£135.70)</option>
+                        <option value="nhs-i" data-value="214.00">NHS Voucher I (£214.00)</option>
+                        <option value="nhs-complex" data-value="14.40">NHS Complex Lens (£14.40)</option>
+                        <option value="insurance">Insurance Claim</option>
+                        <option value="custom-voucher">Custom Amount</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="voucherAmount">Voucher Amount (£)</label>
+                    <input type="number" id="voucherAmount" name="voucherAmount" step="0.01" placeholder="0.00" onchange="calculateTotal()">
+                </div>
+            </div>
+
+            <!-- Cost Summary -->
+            <div class="cost-summary">
+                <div class="cost-line">
+                    <span>Frame:</span>
+                    <span id="summaryFrame">£0.00</span>
+                </div>
+                <div class="cost-line">
+                    <span>Lenses:</span>
+                    <span id="summaryLenses">£0.00</span>
+                </div>
+                <div class="cost-line">
+                    <span>Add-ons:</span>
+                    <span id="summaryAddons">£0.00</span>
+                </div>
+                <div class="cost-line" id="discountLine" style="display: none;">
+                    <span>Discount:</span>
+                    <span id="summaryDiscount" style="color: var(--success);">-£0.00</span>
+                </div>
+                <div class="cost-line" id="voucherLine" style="display: none;">
+                    <span>Voucher/Insurance:</span>
+                    <span id="summaryVoucher" style="color: var(--success);">-£0.00</span>
+                </div>
+                <div class="cost-line total">
+                    <span>Total:</span>
+                    <span id="summaryTotal">£0.00</span>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="form-row" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label for="depositPaid">Deposit Paid (£)</label>
+                    <input type="number" id="depositPaid" name="depositPaid" step="0.01" placeholder="0.00" onchange="calculateBalance()">
+                </div>
+                <div class="form-group">
+                    <label for="balanceDue">Balance Due (£)</label>
+                    <input type="number" id="balanceDue" name="balanceDue" step="0.01" readonly style="background: var(--gray-50);">
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" name="paymentMethod">
+                        <option value="">Select...</option>
+                        <option value="card">Card</option>
+                        <option value="cash">Cash</option>
+                        <option value="bacs">Bank Transfer</option>
+                        <option value="finance">Finance</option>
+                        <option value="mixed">Mixed Payment</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="payment-status" id="paymentStatus">
+                <div class="status-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="status-text">
+                    <strong>Payment Status:</strong>
+                    <span id="paymentStatusText">Awaiting payment</span>
+                </div>
+            </div>
+
+            <div class="form-row" style="margin-top: 16px;">
+                <div class="form-group">
+                    <label for="collectionDate">Collection Date</label>
+                    <input type="date" id="collectionDate" name="collectionDate">
+                </div>
+                <div class="form-group">
+                    <label for="orderNotes">Order Notes</label>
+                    <input type="text" id="orderNotes" name="orderNotes" placeholder="Special instructions, warranty info, etc.">
+                </div>
+            </div>
+        </div>
+
+        <!-- Practitioner Notes -->
+        <div class="section">
+            <h2 class="section-header">Management & Follow-up</h2>
+            <div class="form-group">
+                <label for="additionalNotes">Clinical Notes</label>
+                <div class="smart-input">
+                    <textarea id="additionalNotes" name="additionalNotes"></textarea>
+                    <button class="smart-assist-btn" data-field="additionalNotes">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nextAppointment">Next Appointment</label>
+                    <input type="date" id="nextAppointment" name="nextAppointment">
+                </div>
+                <div class="form-group">
+                    <label for="referralTo">Referral To</label>
+                    <div class="smart-input">
+                        <input type="text" id="referralTo" name="referralTo">
+                        <button class="smart-assist-btn" data-field="referralTo">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="signature">Practitioner</label>
+                    <input type="text" id="signature" name="signature">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date">
+                </div>
+            </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="section">
+            <h2 class="section-header">Attachments</h2>
+            <div class="form-group">
+                <label>Upload Files (Images, PDFs, OCT scans)</label>
+                <div class="file-upload-area" onclick="document.getElementById('fileUpload').click()">
+                    <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto; opacity: 0.3;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    <p style="margin-top: 8px;">Click or drag files here</p>
+                    <input type="file" id="fileUpload" multiple accept=".pdf,.jpg,.jpeg,.png,.gif" style="display: none;">
+                </div>
+                <div class="file-preview" id="filePreview"></div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="saveForm()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                </svg>
+                Save
+            </button>
+            <button class="btn btn-secondary" onclick="window.print()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                </svg>
+                Print Form
+            </button>
+            <button class="btn btn-secondary" onclick="printDispensingOrder()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                </svg>
+                Print Order
+            </button>
+            <button class="btn btn-success" onclick="downloadPDF()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Download PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Hidden Dispensing Order for Printing -->
+    <div id="dispensingOrderPrint" style="display: none;">
+        <div class="order-container">
+            <div class="order-header">
+                <h1>Dispensing Order</h1>
+                <div class="order-info">
+                    <div>
+                        <strong>Order Date:</strong> <span id="orderDate"></span>
+                    </div>
+                    <div>
+                        <strong>Collection Date:</strong> <span id="orderCollectionDate"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-section">
+                <h2>Patient Details</h2>
+                <div class="order-details">
+                    <div><strong>Name:</strong> <span id="orderPatientName"></span></div>
+                    <div><strong>Reference:</strong> <span id="orderReference"></span></div>
+                    <div><strong>Contact:</strong> <span id="orderContact"></span></div>
+                </div>
+            </div>
+            
+            <div class="order-section">
+                <h2>Frame Details</h2>
+                <div class="order-details">
+                    <div><strong>Frame:</strong> <span id="orderFrame"></span></div>
+                    <div><strong>Type:</strong> <span id="orderFrameType"></span></div>
+                    <div><strong>Cost:</strong> £<span id="orderFrameCost"></span></div>
+                </div>
+            </div>
+            
+            <div class="order-section">
+                <h2>Lens Details</h2>
+                <div class="order-details">
+                    <div><strong>Prescription Type:</strong> <span id="orderPrescriptionType"></span></div>
+                    <div><strong>Lens Type:</strong> <span id="orderLensType"></span></div>
+                    <div><strong>Cost:</strong> £<span id="orderLensCost"></span></div>
+                </div>
+            </div>
+            
+            <div class="order-section" id="orderCoatingsSection">
+                <h2>Coatings & Add-ons</h2>
+                <div class="order-details" id="orderCoatingsList"></div>
+            </div>
+            
+            <div class="order-section">
+                <h2>Financial Summary</h2>
+                <table class="order-summary">
+                    <tr>
+                        <td>Frame:</td>
+                        <td class="amount">£<span id="orderSummaryFrame"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Lenses:</td>
+                        <td class="amount">£<span id="orderSummaryLenses"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Add-ons:</td>
+                        <td class="amount">£<span id="orderSummaryAddons"></span></td>
+                    </tr>
+                    <tr class="discount-row" style="display: none;">
+                        <td>Discount:</td>
+                        <td class="amount discount">-£<span id="orderSummaryDiscount"></span></td>
+                    </tr>
+                    <tr class="voucher-row" style="display: none;">
+                        <td>Voucher/Insurance:</td>
+                        <td class="amount discount">-£<span id="orderSummaryVoucher"></span></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>Total:</strong></td>
+                        <td class="amount"><strong>£<span id="orderSummaryTotal"></span></strong></td>
+                    </tr>
+                    <tr class="deposit-row">
+                        <td>Deposit Paid:</td>
+                        <td class="amount">£<span id="orderDepositPaid"></span></td>
+                    </tr>
+                    <tr class="balance-row">
+                        <td><strong>Balance Due:</strong></td>
+                        <td class="amount balance-due"><strong>£<span id="orderBalanceDue"></span></strong></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="order-section">
+                <h2>Payment Information</h2>
+                <div class="order-details">
+                    <div><strong>Payment Method:</strong> <span id="orderPaymentMethod"></span></div>
+                    <div><strong>Status:</strong> <span id="orderPaymentStatus"></span></div>
+                </div>
+            </div>
+            
+            <div class="order-footer">
+                <div class="order-notes">
+                    <strong>Order Notes:</strong> <span id="orderNotes"></span>
+                </div>
+                <div class="order-signature">
+                    <div>
+                        <div class="signature-line"></div>
+                        <p>Customer Signature</p>
+                    </div>
+                    <div>
+                        <div class="signature-line"></div>
+                        <p>Staff Member</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced UK Optometry Dictionary
+        const ukOptometryDictionary = {
+            conversions: {
+                'blurry': 'reduced VA',
+                'blurred': 'reduced VA',
+                'cant see': 'reduced VA',
+                'double vision': 'diplopia',
+                'seeing double': 'diplopia',
+                'flashes': 'photopsia',
+                'spots': 'floaters',
+                'curtain': 'visual field defect',
+                'cloudy': 'media opacity',
+                'hazy': 'media opacity',
+                'glare': 'photophobia',
+                'halos': 'haloes around lights',
+                'reading problems': 'presbyopic symptoms',
+                'computer strain': 'VDU related symptoms',
+                'eye strain': 'asthenopia',
+                'tired eyes': 'asthenopia',
+                'red eyes': 'hyperaemia',
+                'dry eyes': 'dry eye syndrome',
+                'watery eyes': 'epiphora',
+                'itchy eyes': 'ocular pruritus',
+                'headaches': 'cephalgia',
+                'diabetes': 'DM',
+                'high blood pressure': 'hypertension',
+                'high cholesterol': 'hypercholesterolaemia',
+                'cataract': 'lens opacity',
+                'glaucoma': 'POAG',
+                'lazy eye': 'amblyopia',
+                'squint': 'strabismus',
+                'glasses': 'spectacles',
+                'contacts': 'contact lenses',
+                'check up': 'routine examination',
+                'normal': 'NAD',
+                'healthy': 'healthy appearance'
+            },
+            
+            suggestions: {
+                reasonVisit: [
+                    'Routine eye examination',
+                    'Reduced VA - gradual onset',
+                    'Reduced VA - sudden onset',
+                    'Headaches - ocular origin suspected',
+                    'Presbyopic symptoms',
+                    'VDU related symptoms',
+                    'Diplopia',
+                    'Flashes and floaters',
+                    'Dry eye symptoms'
+                ],
+                generalHealth: ['Good', 'T1DM', 'T2DM', 'Hypertension', 'Hypercholesterolaemia', 'Hypothyroidism'],
+                medication: ['Nil', 'Metformin', 'Amlodipine', 'Ramipril', 'Atorvastatin', 'Levothyroxine'],
+                pastOcularHistory: ['Nil', 'Bilateral phacoemulsification + IOL', 'YAG laser capsulotomy'],
+                familyOcularHistory: ['Nil significant', 'POAG - maternal', 'AMD - paternal'],
+                occupation: ['VDU user', 'HGV driver', 'Teacher', 'Nurse', 'Office worker', 'Retired', 'Student', 'Engineer', 'Retail worker'],
+                slitLamp: ['Clear cornea, deep and quiet AC, clear lens OU', 'Grade 1 NS OU', 'Meibomian gland dysfunction'],
+                fundus: ['Clear view, healthy appearance', 'Pink disc, healthy NRR', 'Clear macula, healthy foveal reflex'],
+                referralTo: ['HES - Ophthalmology', 'GP - Further investigation', 'MECS', 'Fast track macular service']
+            }
+        };
+
+        // Speech Recognition Setup
+        let recognition;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.lang = 'en-GB';
+        }
+
+        // Smart Assistant Functionality
+        let activeField = null;
+        let isRecording = false;
+        let aiMode = false;
+
+        document.querySelectorAll('.smart-assist-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const fieldId = this.getAttribute('data-field');
+                const field = document.getElementById(fieldId);
+                
+                if (!recognition) {
+                    alert('Speech recognition not supported. Please type your input.');
+                    return;
+                }
+                
+                if (isRecording && activeField === fieldId) {
+                    // Stop recording
+                    recognition.stop();
+                    this.classList.remove('recording');
+                    isRecording = false;
+                } else if (this.classList.contains('active') && !isRecording) {
+                    // Deactivate AI mode
+                    this.classList.remove('active');
+                    aiMode = false;
+                    hideSuggestions();
+                } else {
+                    // Start recording or activate AI mode
+                    activeField = fieldId;
+                    
+                    // Check if there's text to process
+                    if (field.value && !isRecording) {
+                        // Activate AI mode
+                        this.classList.add('active');
+                        aiMode = true;
+                        processText(field);
+                        showSuggestions(fieldId);
+                    } else {
+                        // Start voice recording
+                        this.classList.add('recording');
+                        isRecording = true;
+                        startRecognition(field);
+                    }
+                }
+            });
+        });
+
+        function startRecognition(field) {
+            recognition.onresult = function(event) {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0])
+                    .map(result => result.transcript)
+                    .join('');
+                
+                field.value = transcript;
+                
+                if (aiMode) {
+                    processText(field);
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                alert('Error: ' + event.error);
+                document.querySelector(`[data-field="${field.id}"]`).classList.remove('recording');
+                isRecording = false;
+            };
+
+            recognition.onend = function() {
+                document.querySelector(`[data-field="${field.id}"]`).classList.remove('recording');
+                isRecording = false;
+                saveToLocalStorage();
+            };
+
+            recognition.start();
+        }
+
+        function processText(input) {
+            let text = input.value;
+            const originalText = text;
+            
+            // Apply conversions
+            Object.entries(ukOptometryDictionary.conversions).forEach(([key, value]) => {
+                const regex = new RegExp('\\b' + key + '\\b', 'gi');
+                text = text.replace(regex, value);
+            });
+            
+            // Field-specific processing
+            if (input.id === 'nhsNumber') {
+                text = text.replace(/\D/g, '');
+                if (text.length === 10) {
+                    text = text.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+                }
+            } else if (input.id.includes('va')) {
+                if (text.match(/^\d+\/\d+$/)) {
+                    text = '6/' + text.split('/')[1];
+                }
+            } else if (input.id.includes('iop')) {
+                if (text.match(/^\d+$/)) {
+                    text += ' mmHg';
+                }
+            }
+            
+            if (text !== originalText) {
+                input.value = text;
+                saveToLocalStorage();
+            }
+        }
+
+        function showSuggestions(fieldId) {
+            const suggestionBox = document.getElementById(fieldId + '-suggestions');
+            if (!suggestionBox) return;
+            
+            const field = document.getElementById(fieldId);
+            const value = field.value.toLowerCase();
+            
+            // Get relevant suggestions
+            let suggestions = [];
+            Object.entries(ukOptometryDictionary.suggestions).forEach(([key, values]) => {
+                if (fieldId.toLowerCase().includes(key.toLowerCase())) {
+                    suggestions = values;
+                }
+            });
+            
+            // Filter based on input
+            if (value) {
+                suggestions = suggestions.filter(s => 
+                    s.toLowerCase().includes(value)
+                );
+            }
+            
+            // Display suggestions
+            if (suggestions.length > 0) {
+                suggestionBox.innerHTML = '';
+                suggestions.slice(0, 8).forEach(suggestion => {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item';
+                    item.textContent = suggestion;
+                    item.addEventListener('click', () => {
+                        field.value = suggestion;
+                        saveToLocalStorage();
+                        hideSuggestions();
+                    });
+                    suggestionBox.appendChild(item);
+                });
+                suggestionBox.style.display = 'block';
+            }
+        }
+
+        function hideSuggestions() {
+            document.querySelectorAll('.smart-suggestions').forEach(box => {
+                box.style.display = 'none';
+            });
+        }
+
+        // Quick Actions
+        document.querySelectorAll('.quick-action').forEach(action => {
+            action.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const parentId = this.parentElement.id.replace('-quick', '');
+                const field = document.getElementById(parentId);
+                
+                if (field.value) {
+                    field.value += ', ' + value;
+                } else {
+                    field.value = value;
+                }
+                
+                saveToLocalStorage();
+            });
+        });
+
+        // Prescription Sign Toggles
+        document.querySelectorAll('.rx-sign').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const fieldId = this.getAttribute('data-field');
+                const value = this.getAttribute('data-value');
+                const field = document.getElementById(fieldId);
+                
+                // Remove active class from sibling
+                this.parentElement.querySelectorAll('.rx-sign').forEach(btn => {
+                    btn.classList.remove('active', 'plus', 'minus');
+                });
+                
+                // Add active class
+                this.classList.add('active');
+                this.classList.add(value === '+' ? 'plus' : 'minus');
+                
+                // Update field value
+                let currentValue = field.value.replace(/^[+-]/, '');
+                if (currentValue && currentValue !== '0.00') {
+                    field.value = value + currentValue;
+                } else {
+                    field.value = value + '0.00';
+                }
+                
+                saveToLocalStorage();
+                updateDispensingCalculator();
+            });
+        });
+
+        // Prescription formatting
+        document.querySelectorAll('.rx-input').forEach(input => {
+            input.addEventListener('blur', function() {
+                let value = this.value.trim();
+                if (!value) return;
+                
+                // Format sphere/cylinder/add
+                if (this.id.includes('sphere') || this.id.includes('cyl') || this.id.includes('add')) {
+                    const isNegative = value.startsWith('-');
+                    value = value.replace(/^[+-]/, '');
+                    
+                    if (value && !value.includes('.')) {
+                        value = value + '.00';
+                    } else if (value.match(/\.\d$/)) {
+                        value += '0';
+                    }
+                    
+                    if (value && value !== '0.00') {
+                        value = (isNegative ? '-' : '+') + value;
+                        
+                        // Update sign toggle
+                        const signBtns = this.parentElement.querySelectorAll('.rx-sign');
+                        signBtns.forEach(btn => {
+                            btn.classList.remove('active', 'plus', 'minus');
+                            if (btn.getAttribute('data-value') === (isNegative ? '-' : '+')) {
+                                btn.classList.add('active', isNegative ? 'minus' : 'plus');
+                            }
+                        });
+                    }
+                }
+                
+                // Format axis
+                if (this.id.includes('axis')) {
+                    value = value.replace(/\D/g, '');
+                    if (value) {
+                        value = parseInt(value);
+                        if (value > 180) value = 180;
+                        if (value < 1) value = 1;
+                        value = value.toString().padStart(3, '0');
+                    }
+                }
+                
+                this.value = value;
+                saveToLocalStorage();
+                updateDispensingCalculator();
+            });
+        });
+
+        // Smart Dispensing Calculator
+        function updateDispensingCalculator() {
+            const panel = document.getElementById('calculatorPanel');
+            const alertsDiv = document.getElementById('calcAlerts');
+            alertsDiv.innerHTML = '';
+            
+            // Get prescription values
+            const sphereRE = parseFloat((document.getElementById('sphereRE').value || '0').replace(/[+-]/, '')) * 
+                           ((document.getElementById('sphereRE').value || '').startsWith('-') ? -1 : 1);
+            const sphereLE = parseFloat((document.getElementById('sphereLE').value || '0').replace(/[+-]/, '')) * 
+                           ((document.getElementById('sphereLE').value || '').startsWith('-') ? -1 : 1);
+            const cylRE = parseFloat((document.getElementById('cylRE').value || '0').replace(/[+-]/, '')) * 
+                        ((document.getElementById('cylRE').value || '').startsWith('-') ? -1 : 1);
+            const cylLE = parseFloat((document.getElementById('cylLE').value || '0').replace(/[+-]/, '')) * 
+                        ((document.getElementById('cylLE').value || '').startsWith('-') ? -1 : 1);
+            
+            // Get measurements
+            const distPD = parseFloat(document.getElementById('pdDistance').value) || 0;
+            const nearPD = parseFloat(document.getElementById('pdNear').value) || 0;
+            const bvd = parseFloat(document.getElementById('bvd').value) || 12;
+            const frameA = parseFloat(document.getElementById('frameA').value) || 0;
+            const frameDBL = parseFloat(document.getElementById('frameDBL').value) || 0;
+            
+            if (distPD > 0 || frameA > 0) {
+                panel.style.display = 'block';
+                
+                // Calculate monocular PDs (assuming equal split)
+                if (distPD > 0) {
+                    const monoPD_RE = (distPD / 2).toFixed(1);
+                    const monoPD_LE = (distPD / 2).toFixed(1);
+                    document.getElementById('calcMonoPD').textContent = `RE: ${monoPD_RE} / LE: ${monoPD_LE}`;
+                    
+                    // Calculate near PD if not provided
+                    if (!nearPD && distPD) {
+                        const calcNearPD = (distPD - 3).toFixed(1);
+                        document.getElementById('calcNearPD').textContent = `${calcNearPD} mm`;
+                    }
+                }
+                
+                // Calculate minimum blank size
+                if (frameA > 0 && distPD > 0) {
+                    const decentration = Math.abs((frameA + frameDBL) / 2 - distPD / 2);
+                    const minBlank = (frameA + (2 * decentration) + 2).toFixed(0);
+                    document.getElementById('calcBlankSize').textContent = `${minBlank} mm`;
+                    
+                    // Show decentration
+                    document.getElementById('calcDecentration').textContent = 
+                        `RE: ${decentration.toFixed(1)} / LE: ${decentration.toFixed(1)}`;
+                    
+                    // Calculate prism by decentration if powers are significant
+                    if (Math.abs(sphereRE) > 0.5 || Math.abs(sphereLE) > 0.5) {
+                        document.getElementById('prismCalculation').style.display = 'block';
+                        const prismRE = (decentration * sphereRE / 10).toFixed(2);
+                        const prismLE = (decentration * sphereLE / 10).toFixed(2);
+                        document.getElementById('calcPrismRE').textContent = `${Math.abs(prismRE)}Δ ${prismRE > 0 ? 'BO' : 'BI'}`;
+                        document.getElementById('calcPrismLE').textContent = `${Math.abs(prismLE)}Δ ${prismLE > 0 ? 'BI' : 'BO'}`;
+                    }
+                }
+                
+                // BVD adjustment for high powers
+                if (Math.abs(sphereRE) > 4 || Math.abs(sphereLE) > 4) {
+                    document.getElementById('bvdAdjustment').style.display = 'block';
+                    
+                    // Calculate BVD adjusted powers
+                    const adjustedRE = sphereRE / (1 - (bvd / 1000) * sphereRE);
+                    const adjustedLE = sphereLE / (1 - (bvd / 1000) * sphereLE);
+                    
+                    document.getElementById('calcBvdRE').textContent = 
+                        `${adjustedRE > 0 ? '+' : ''}${adjustedRE.toFixed(2)} DS`;
+                    document.getElementById('calcBvdLE').textContent = 
+                        `${adjustedLE > 0 ? '+' : ''}${adjustedLE.toFixed(2)} DS`;
+                    
+                    // Add alert for significant BVD adjustment
+                    if (Math.abs(adjustedRE - sphereRE) > 0.25 || Math.abs(adjustedLE - sphereLE) > 0.25) {
+                        addAlert('BVD adjustment recommended for high prescription', 'warning');
+                    }
+                }
+                
+                // Validation checks
+                if (distPD > 75 || distPD < 50) {
+                    addAlert('Unusual PD measurement - please verify', 'error');
+                }
+                
+                if (Math.abs(sphereRE - sphereLE) > 2) {
+                    addAlert('Significant anisometropia detected', 'warning');
+                }
+                
+                if (frameA > 60) {
+                    addAlert('Large frame size - consider lens thickness', 'warning');
+                }
+            } else {
+                panel.style.display = 'none';
+            }
+        }
+
+        function addAlert(message, type) {
+            const alertsDiv = document.getElementById('calcAlerts');
+            const alert = document.createElement('div');
+            alert.className = `calc-alert ${type}`;
+            alert.innerHTML = `
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>
+                ${message}
+            `;
+            alertsDiv.appendChild(alert);
+        }
+
+        // Auto-save functionality
+        function saveToLocalStorage() {
+            const formData = {};
+            document.querySelectorAll('input, textarea, select').forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    formData[input.id || input.name] = input.checked;
+                } else {
+                    formData[input.id] = input.value;
+                }
+            });
+            localStorage.setItem('optometricRecordCard', JSON.stringify(formData));
+        }
+
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('optometricRecordCard');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                Object.keys(formData).forEach(key => {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        if (input.type === 'checkbox' || input.type === 'radio') {
+                            input.checked = formData[key];
+                        } else {
+                            input.value = formData[key];
+                        }
+                    }
+                });
+                // Update sign toggles
+                document.querySelectorAll('.rx-input').forEach(input => {
+                    if (input.value) {
+                        const signBtns = input.parentElement.querySelectorAll('.rx-sign');
+                        signBtns.forEach(btn => {
+                            btn.classList.remove('active', 'plus', 'minus');
+                            if (input.value.startsWith(btn.getAttribute('data-value'))) {
+                                btn.classList.add('active');
+                                btn.classList.add(btn.getAttribute('data-value') === '+' ? 'plus' : 'minus');
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+        // Calculate age
+        function calculateAge() {
+            const dob = document.getElementById('dob').value;
+            if (dob) {
+                const birthDate = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                document.getElementById('age').value = age;
+            }
+        }
+
+        // Save form
+        function saveForm() {
+            saveToLocalStorage();
+            
+            // Show success message
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Saved!';
+            btn.classList.add('btn-success');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-primary');
+            }, 2000);
+        }
+
+        // Download PDF
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            
+            // Hide buttons
+            const elementsToHide = document.querySelectorAll('.smart-assist-btn, .button-group, .file-remove, .rx-sign-toggle, .quick-actions, .calculator-panel');
+            elementsToHide.forEach(el => el.style.display = 'none');
+            
+            const patientName = document.getElementById('name').value || 'Patient';
+            const date = new Date().toISOString().split('T')[0];
+            const filename = `OptometryRecord-${patientName.replace(/\s+/g, '')}-${date}.pdf`;
+            
+            html2canvas(document.getElementById('recordCard'), {
+                scale: 2,
+                logging: false,
+                useCORS: true
+            }).then(canvas => {
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight) * 0.95;
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                
+                pdf.addImage(imgData, 'PNG', imgX, 10, imgWidth * ratio, imgHeight * ratio);
+                pdf.save(filename);
+                
+                // Show elements again
+                elementsToHide.forEach(el => el.style.display = '');
+            });
+        }
+
+        // File upload handlers
+        const fileUpload = document.getElementById('fileUpload');
+        const filePreview = document.getElementById('filePreview');
+        const fileUploadArea = document.querySelector('.file-upload-area');
+        let uploadedFiles = [];
+
+        fileUpload.addEventListener('change', function(e) {
+            handleFiles(e.target.files);
+        });
+
+        fileUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.match(/image.*|application\/pdf/)) {
+                    uploadedFiles.push(file);
+                    displayFile(file);
+                }
+            });
+        }
+
+        function displayFile(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'file-remove';
+            removeBtn.innerHTML = '×';
+            removeBtn.onclick = () => {
+                fileItem.remove();
+                uploadedFiles = uploadedFiles.filter(f => f !== file);
+            };
+            
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    fileItem.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}" style="width: 100%; height: 150px; object-fit: cover;">
+                        <div style="padding: 8px; font-size: 12px;">${file.name}</div>
+                    `;
+                    fileItem.appendChild(removeBtn);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileItem.innerHTML = `
+                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background: var(--gray-100); font-size: 48px;">📄</div>
+                    <div style="padding: 8px; font-size: 12px;">${file.name}</div>
+                `;
+                fileItem.appendChild(removeBtn);
+            }
+            
+            filePreview.appendChild(fileItem);
+        }
+
+        // Financial Calculations
+        function updateLensCost() {
+            const lensType = document.getElementById('lensTypeSelect');
+            const lensCost = document.getElementById('lensCost');
+            
+            if (lensType.value && lensType.value !== 'custom') {
+                const selectedOption = lensType.options[lensType.selectedIndex];
+                const cost = selectedOption.getAttribute('data-cost');
+                lensCost.value = cost;
+            }
+            
+            calculateTotal();
+        }
+
+        function applyVoucher() {
+            const voucherType = document.getElementById('voucherType');
+            const voucherAmount = document.getElementById('voucherAmount');
+            
+            if (voucherType.value && voucherType.value !== 'insurance' && voucherType.value !== 'custom-voucher') {
+                const selectedOption = voucherType.options[voucherType.selectedIndex];
+                const value = selectedOption.getAttribute('data-value');
+                voucherAmount.value = value;
+            }
+            
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            // Get base costs
+            const frameCost = parseFloat(document.getElementById('frameCost').value) || 0;
+            const lensCost = parseFloat(document.getElementById('lensCost').value) || 0;
+            
+            // Calculate add-ons
+            let addonsTotal = 0;
+            
+            // Get coating prices
+            const coating1Price = parseFloat(document.getElementById('coating1Price').value) || 0;
+            const coating2Price = parseFloat(document.getElementById('coating2Price').value) || 0;
+            const tintPrice = parseFloat(document.getElementById('tintPrice').value) || 0;
+            const otherAddon1Price = parseFloat(document.getElementById('otherAddon1Price').value) || 0;
+            const otherAddon2Price = parseFloat(document.getElementById('otherAddon2Price').value) || 0;
+            
+            addonsTotal = coating1Price + coating2Price + tintPrice + otherAddon1Price + otherAddon2Price;
+            
+            // Calculate subtotal
+            const subtotal = frameCost + lensCost + addonsTotal;
+            
+            // Apply discount
+            const discountPercent = parseFloat(document.getElementById('discount').value) || 0;
+            const discountAmount = (subtotal * discountPercent) / 100;
+            
+            // Apply voucher
+            const voucherAmount = parseFloat(document.getElementById('voucherAmount').value) || 0;
+            
+            // Calculate final total
+            let total = subtotal - discountAmount - voucherAmount;
+            total = Math.max(0, total); // Ensure non-negative
+            
+            // Update summary display
+            document.getElementById('summaryFrame').textContent = `£${frameCost.toFixed(2)}`;
+            document.getElementById('summaryLenses').textContent = `£${lensCost.toFixed(2)}`;
+            document.getElementById('summaryAddons').textContent = `£${addonsTotal.toFixed(2)}`;
+            
+            // Show/hide discount line
+            if (discountAmount > 0) {
+                document.getElementById('discountLine').style.display = 'flex';
+                document.getElementById('summaryDiscount').textContent = `-£${discountAmount.toFixed(2)}`;
+            } else {
+                document.getElementById('discountLine').style.display = 'none';
+            }
+            
+            // Show/hide voucher line
+            if (voucherAmount > 0) {
+                document.getElementById('voucherLine').style.display = 'flex';
+                document.getElementById('summaryVoucher').textContent = `-£${voucherAmount.toFixed(2)}`;
+            } else {
+                document.getElementById('voucherLine').style.display = 'none';
+            }
+            
+            document.getElementById('summaryTotal').textContent = `£${total.toFixed(2)}`;
+            
+            // Store total for balance calculation
+            window.currentTotal = total;
+            
+            // Update balance
+            calculateBalance();
+            
+            // Save form
+            saveToLocalStorage();
+        }
+
+        function calculateBalance() {
+            const total = window.currentTotal || 0;
+            const deposit = parseFloat(document.getElementById('depositPaid').value) || 0;
+            const balance = total - deposit;
+            
+            document.getElementById('balanceDue').value = balance.toFixed(2);
+            
+            // Update payment status
+            const statusDiv = document.getElementById('paymentStatus');
+            const statusText = document.getElementById('paymentStatusText');
+            
+            if (balance <= 0 && total > 0) {
+                statusDiv.className = 'payment-status paid';
+                statusText.textContent = 'Paid in full';
+            } else if (deposit > 0) {
+                statusDiv.className = 'payment-status partial';
+                statusText.textContent = `Partial payment - £${balance.toFixed(2)} outstanding`;
+            } else {
+                statusDiv.className = 'payment-status';
+                statusText.textContent = 'Awaiting payment';
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            loadFromLocalStorage();
+            calculateAge();
+            updateDispensingCalculator();
+            
+            // Set today's date
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            
+            // Auto-save on input
+            document.querySelectorAll('input, textarea, select').forEach(input => {
+                input.addEventListener('input', () => {
+                    clearTimeout(window.autoSaveTimer);
+                    window.autoSaveTimer = setTimeout(saveToLocalStorage, 1000);
+                });
+            });
+            
+            // Click outside to hide suggestions
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.smart-input')) {
+                    hideSuggestions();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
