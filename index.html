@@ -1240,11 +1240,11 @@
             opacity: 1;
         }
 
-        /* Warning Notice */
+        /* Security Notice (formerly Warning Notice) */
         .warning-notice {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 1px solid var(--warning);
-            color: #92400e;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border: 1px solid var(--primary);
+            color: #075985;
             padding: 12px 16px;
             border-radius: var(--radius);
             margin-bottom: 20px;
@@ -1258,6 +1258,11 @@
             width: 16px;
             height: 16px;
             flex-shrink: 0;
+            color: var(--primary);
+        }
+
+        .warning-notice strong {
+            color: #0c4a6e;
         }
 
         /* Reset Notification */
@@ -1296,6 +1301,53 @@
                 left: 16px;
                 justify-content: center;
             }
+        }
+
+        /* Patient List Items */
+        .patient-list-item {
+            padding: 8px;
+            border-radius: var(--radius);
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .patient-list-item:hover {
+            transform: translateX(2px);
+        }
+
+        .patient-list-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .patient-list-item:not(.active) {
+            background: var(--gray-100);
+        }
+
+        .patient-list-item:not(.active):hover {
+            background: var(--gray-200);
+        }
+
+        .patient-list-item.active:hover {
+            background: var(--primary-dark);
+        }
+
+        .patient-delete-btn {
+            padding: 4px 8px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .patient-delete-btn:hover {
+            transform: scale(1.05);
         }
 
         /* Order Print Styles */
@@ -1440,12 +1492,67 @@
         </h1>
         <p class="subtitle">Intelligent form with voice input and professional terminology assistance</p>
         
+        <!-- Patient Management Section -->
+        <div class="section" style="background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); color: white; border: none;">
+            <h2 class="section-header" style="color: white; border-bottom-color: rgba(255, 255, 255, 0.3);">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Patient Management
+            </h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patientSearch" style="color: rgba(255, 255, 255, 0.9);">Search Patients</label>
+                    <div style="position: relative;">
+                        <input type="text" id="patientSearch" placeholder="Search by name, ID, or NHS number..." style="padding-left: 40px; background: rgba(255, 255, 255, 0.95); border-color: transparent;">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gray-400);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="form-group" style="display: flex; gap: 12px; align-items: flex-end;">
+                    <button class="btn" style="background: white; color: var(--primary); flex: 1;" onclick="saveAsNewPatient()">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                        </svg>
+                        Save as New Patient
+                    </button>
+                    <button class="btn" style="background: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.3);" onclick="updateCurrentPatient()">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                        </svg>
+                        Update Current
+                    </button>
+                </div>
+            </div>
+            <div id="currentPatientInfo" style="display: none; margin-top: 16px; padding: 12px; background: rgba(255, 255, 255, 0.1); border-radius: var(--radius); border: 1px solid rgba(255, 255, 255, 0.2);">
+                <div style="font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-bottom: 4px;">Currently Editing:</div>
+                <div style="font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+                    <span id="currentPatientName"></span>
+                    <span style="font-size: 13px; color: rgba(255, 255, 255, 0.8);">ID: <span id="currentPatientId"></span></span>
+                </div>
+            </div>
+            <div id="patientList" style="display: none; margin-top: 16px; max-height: 200px; overflow-y: auto; background: rgba(255, 255, 255, 0.95); border-radius: var(--radius); padding: 8px;">
+                <!-- Patient list will be populated here -->
+            </div>
+            <div style="margin-top: 12px; font-size: 12px; color: rgba(255, 255, 255, 0.8); display: flex; justify-content: space-between;">
+                <span>Total Patients: <strong id="totalPatients">0</strong></span>
+                <span>Storage Used: <strong id="storageUsed">0%</strong></span>
+                <span style="display: flex; align-items: center; gap: 4px;">
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Secure Local Storage
+                </span>
+            </div>
+        </div>
+
         <div class="warning-notice">
             <svg fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
             </svg>
             <div>
-                This tool does not store data. Please download or print before closing.<br>
+                <strong>Data Protection:</strong> Patient records are stored in your browser only. They will persist between sessions but are tied to this device. No data is sent to external servers.<br>
                 AI assistance converts common language to UK optometry terminology.<br>
                 Voice input: Click mic icon to start/stop. AI processes automatically.
             </div>
@@ -3371,6 +3478,285 @@
             }
         }
 
+        // Patient Management System
+        let currentPatientId = null;
+
+        function generatePatientId() {
+            return 'PAT-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+        }
+
+        function getAllPatients() {
+            const patients = localStorage.getItem('patientRecords');
+            return patients ? JSON.parse(patients) : {};
+        }
+
+        function savePatient(patientId, patientData) {
+            const patients = getAllPatients();
+            patients[patientId] = {
+                ...patientData,
+                lastModified: new Date().toISOString(),
+                patientId: patientId
+            };
+            localStorage.setItem('patientRecords', JSON.stringify(patients));
+            updatePatientStats();
+            return patientId;
+        }
+
+        function saveAsNewPatient() {
+            const name = document.getElementById('name').value;
+            if (!name) {
+                alert('Please enter a patient name before saving.');
+                document.getElementById('name').focus();
+                return;
+            }
+
+            const formData = {};
+            document.querySelectorAll('input, textarea, select').forEach(function(input) {
+                if (input.id && input.id !== 'patientSearch') {
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        formData[input.id] = input.checked;
+                    } else {
+                        formData[input.id] = input.value;
+                    }
+                }
+            });
+
+            const newPatientId = generatePatientId();
+            savePatient(newPatientId, formData);
+            currentPatientId = newPatientId;
+            
+            updateCurrentPatientDisplay();
+            showNotification('Patient saved successfully', 'success');
+            searchPatients(''); // Refresh the list
+        }
+
+        function updateCurrentPatient() {
+            if (!currentPatientId) {
+                alert('No patient currently loaded. Please save as new patient.');
+                return;
+            }
+
+            const formData = {};
+            document.querySelectorAll('input, textarea, select').forEach(function(input) {
+                if (input.id && input.id !== 'patientSearch') {
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        formData[input.id] = input.checked;
+                    } else {
+                        formData[input.id] = input.value;
+                    }
+                }
+            });
+
+            savePatient(currentPatientId, formData);
+            showNotification('Patient updated successfully', 'success');
+            searchPatients(''); // Refresh the list
+        }
+
+        function loadPatient(patientId) {
+            const patients = getAllPatients();
+            const patientData = patients[patientId];
+            
+            if (!patientData) {
+                alert('Patient not found');
+                return;
+            }
+
+            // Clear current form
+            confirmReset(true); // Silent reset without notification
+            
+            // Load patient data
+            Object.keys(patientData).forEach(function(key) {
+                if (key !== 'lastModified' && key !== 'patientId') {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        if (input.type === 'checkbox' || input.type === 'radio') {
+                            input.checked = patientData[key];
+                        } else {
+                            input.value = patientData[key];
+                        }
+                    }
+                }
+            });
+
+            // Update prescription sign toggles
+            document.querySelectorAll('.rx-input').forEach(function(input) {
+                if (input.value) {
+                    const signBtns = input.parentElement.querySelectorAll('.rx-sign');
+                    signBtns.forEach(function(btn) {
+                        btn.classList.remove('active', 'plus', 'minus');
+                        if (input.value.startsWith(btn.getAttribute('data-value'))) {
+                            btn.classList.add('active');
+                            btn.classList.add(btn.getAttribute('data-value') === '+' ? 'plus' : 'minus');
+                        }
+                    });
+                }
+            });
+
+            currentPatientId = patientId;
+            updateCurrentPatientDisplay();
+            calculateTotal();
+            updateDispensingCalculator();
+            calculateAge();
+            
+            document.getElementById('patientList').style.display = 'none';
+            showNotification('Patient loaded successfully', 'success');
+        }
+
+        function deletePatient(patientId) {
+            if (!confirm('Are you sure you want to delete this patient record? This cannot be undone.')) {
+                return;
+            }
+
+            const patients = getAllPatients();
+            delete patients[patientId];
+            localStorage.setItem('patientRecords', JSON.stringify(patients));
+            
+            if (currentPatientId === patientId) {
+                currentPatientId = null;
+                updateCurrentPatientDisplay();
+            }
+            
+            updatePatientStats();
+            searchPatients(document.getElementById('patientSearch').value);
+            showNotification('Patient deleted', 'danger');
+        }
+
+        function searchPatients(query) {
+            const patients = getAllPatients();
+            const patientList = document.getElementById('patientList');
+            const searchTerm = query.toLowerCase();
+            
+            let html = '';
+            let count = 0;
+            
+            Object.keys(patients).forEach(function(patientId) {
+                const patient = patients[patientId];
+                const name = patient.name || 'Unnamed';
+                const nhs = patient.nhsNumber || '';
+                const dob = patient.dob || '';
+                const idRef = patient.idReference || '';
+                
+                if (name.toLowerCase().includes(searchTerm) || 
+                    nhs.includes(searchTerm) || 
+                    idRef.toLowerCase().includes(searchTerm) ||
+                    patientId.toLowerCase().includes(searchTerm)) {
+                    
+                    const lastModified = new Date(patient.lastModified).toLocaleDateString('en-GB');
+                    const isActive = currentPatientId === patientId;
+                    
+                    html += `
+                        <div style="padding: 8px; border-radius: var(--radius); margin-bottom: 4px; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: space-between; align-items: center; ${isActive ? 'background: var(--primary); color: white;' : 'background: var(--gray-100);'}" 
+                             onmouseover="this.style.background='${isActive ? 'var(--primary-dark)' : 'var(--gray-200)'}'" 
+                             onmouseout="this.style.background='${isActive ? 'var(--primary)' : 'var(--gray-100)'}'"
+                             onclick="loadPatient('${patientId}')">
+                            <div>
+                                <div style="font-weight: 600; ${isActive ? '' : 'color: var(--gray-900);'}">${name}</div>
+                                <div style="font-size: 12px; ${isActive ? 'color: rgba(255, 255, 255, 0.8);' : 'color: var(--gray-600);'}">
+                                    ${dob ? 'DOB: ' + new Date(dob).toLocaleDateString('en-GB') + ' • ' : ''}
+                                    ${nhs ? 'NHS: ' + nhs + ' • ' : ''}
+                                    Last: ${lastModified}
+                                </div>
+                            </div>
+                            <button onclick="event.stopPropagation(); deletePatient('${patientId}')" 
+                                    style="padding: 4px 8px; background: ${isActive ? 'rgba(255, 255, 255, 0.2)' : 'var(--danger)'}; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                                Delete
+                            </button>
+                        </div>
+                    `;
+                    count++;
+                }
+            });
+            
+            if (count > 0) {
+                patientList.innerHTML = html;
+                patientList.style.display = 'block';
+            } else if (searchTerm) {
+                patientList.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--gray-500);">No patients found</div>';
+                patientList.style.display = 'block';
+            } else {
+                patientList.style.display = 'none';
+            }
+        }
+
+        function updateCurrentPatientDisplay() {
+            const info = document.getElementById('currentPatientInfo');
+            const nameSpan = document.getElementById('currentPatientName');
+            const idSpan = document.getElementById('currentPatientId');
+            
+            if (currentPatientId) {
+                const patients = getAllPatients();
+                const patient = patients[currentPatientId];
+                if (patient) {
+                    nameSpan.textContent = patient.name || 'Unnamed Patient';
+                    idSpan.textContent = currentPatientId;
+                    info.style.display = 'block';
+                    return;
+                }
+            }
+            
+            info.style.display = 'none';
+        }
+
+        function updatePatientStats() {
+            const patients = getAllPatients();
+            const patientCount = Object.keys(patients).length;
+            document.getElementById('totalPatients').textContent = patientCount;
+            
+            // Estimate storage usage (localStorage has ~10MB limit)
+            const dataSize = JSON.stringify(patients).length;
+            const percentage = Math.min(100, (dataSize / (10 * 1024 * 1024)) * 100);
+            document.getElementById('storageUsed').textContent = percentage.toFixed(1) + '%';
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'reset-notification';
+            if (type === 'danger') {
+                notification.style.background = 'var(--danger)';
+            }
+            notification.innerHTML = `
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(function() {
+                notification.classList.add('active');
+            }, 10);
+            
+            setTimeout(function() {
+                notification.classList.remove('active');
+                setTimeout(function() {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Patient search input handler
+        document.getElementById('patientSearch').addEventListener('input', function(e) {
+            searchPatients(e.target.value);
+        });
+
+        // Click outside to hide patient list
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#patientSearch') && !e.target.closest('#patientList')) {
+                document.getElementById('patientList').style.display = 'none';
+            }
+        });
+
+        // Show all patients when clicking on search
+        document.getElementById('patientSearch').addEventListener('focus', function() {
+            if (this.value === '') {
+                const patients = getAllPatients();
+                if (Object.keys(patients).length > 0) {
+                    searchPatients('');
+                }
+            }
+        });
+
         // Calculate age
         function calculateAge() {
             const dob = document.getElementById('dob').value;
@@ -3390,18 +3776,23 @@
         function saveForm() {
             saveToLocalStorage();
             
-            // Show success message
-            const btn = event.target.closest('.btn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Saved!';
-            btn.classList.remove('btn-primary');
-            btn.classList.add('btn-success');
-            
-            setTimeout(function() {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-primary');
-            }, 2000);
+            // If there's a current patient, update it
+            if (currentPatientId) {
+                updateCurrentPatient();
+            } else {
+                // Show success message
+                const btn = event.target.closest('.btn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Saved Locally!';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-success');
+                
+                setTimeout(function() {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-primary');
+                }, 2000);
+            }
         }
 
         // Print Customer Order (with prices)
@@ -4066,13 +4457,15 @@
             modal.classList.remove('active');
         }
 
-        function confirmReset() {
+        function confirmReset(silent = false) {
             // Clear localStorage
             localStorage.removeItem('optometricRecordCard');
             
             // Reset all input fields
             document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"], input[type="number"], textarea').forEach(function(input) {
-                input.value = '';
+                if (input.id !== 'patientSearch') { // Don't clear patient search
+                    input.value = '';
+                }
             });
             
             // Reset all select fields
@@ -4131,8 +4524,10 @@
             // Close modal
             closeResetModal();
             
-            // Show success message
-            showResetSuccess();
+            // Show success message only if not silent
+            if (!silent) {
+                showResetSuccess();
+            }
         }
 
         function showResetSuccess() {
@@ -4162,6 +4557,39 @@
 
         // Initialize
         window.addEventListener('load', function() {
+            // Initialize patient management
+            updatePatientStats();
+            updateCurrentPatientDisplay();
+            
+            // Patient search input handler
+            document.getElementById('patientSearch').addEventListener('input', function(e) {
+                searchPatients(e.target.value);
+            });
+
+            // Show all patients when clicking on search
+            document.getElementById('patientSearch').addEventListener('focus', function() {
+                if (this.value === '') {
+                    const patients = getAllPatients();
+                    if (Object.keys(patients).length > 0) {
+                        searchPatients('');
+                    }
+                }
+            });
+            
+            // Check if there's a single patient record from old version
+            const oldData = localStorage.getItem('optometricRecordCard');
+            if (oldData && !localStorage.getItem('patientRecords')) {
+                // Migrate old data to new system
+                const formData = JSON.parse(oldData);
+                if (formData.name) {
+                    const patientId = generatePatientId();
+                    savePatient(patientId, formData);
+                    currentPatientId = patientId;
+                    updateCurrentPatientDisplay();
+                    showNotification('Previous patient data migrated to new system', 'success');
+                }
+            }
+            
             loadFromLocalStorage();
             calculateAge();
             updateDispensingCalculator();
@@ -4177,10 +4605,14 @@
                 });
             });
             
-            // Click outside to hide suggestions
+            // Click outside to hide suggestions and patient list
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.smart-input')) {
                     hideSuggestions();
+                }
+                
+                if (!e.target.closest('#patientSearch') && !e.target.closest('#patientList')) {
+                    document.getElementById('patientList').style.display = 'none';
                 }
                 
                 // Close modal on outside click
@@ -4199,6 +4631,8 @@
                     if (document.getElementById('resetModal').classList.contains('active')) {
                         closeResetModal();
                     }
+                    // Hide patient list
+                    document.getElementById('patientList').style.display = 'none';
                 }
             });
         });
