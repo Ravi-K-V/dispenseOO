@@ -791,6 +791,142 @@
             box-shadow: var(--shadow-md);
         }
 
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            position: relative;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            box-shadow: var(--shadow-md);
+        }
+
+        .button-separator {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .button-separator {
+                display: block;
+                width: 100%;
+                height: 1px;
+                background: var(--gray-200);
+                margin: 8px 0;
+            }
+        }
+
+        /* Confirmation Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-xl);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .modal-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--danger);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin: 0;
+        }
+
+        .modal-body {
+            color: var(--gray-600);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-body strong {
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+
+        .modal-body ul {
+            margin-top: 12px;
+            margin-left: 20px;
+        }
+
+        .modal-body li {
+            margin-bottom: 4px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        @media (max-width: 640px) {
+            .modal {
+                padding: 24px;
+                margin: 16px;
+            }
+
+            .modal-actions {
+                flex-direction: column-reverse;
+            }
+
+            .modal-actions .btn {
+                width: 100%;
+            }
+        }
+
         .btn-sm {
             padding: 6px 12px;
             font-size: 13px;
@@ -801,6 +937,15 @@
             gap: 12px;
             flex-wrap: wrap;
             margin-top: 24px;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .button-group-primary {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
         }
 
         /* Checkboxes and Radio */
@@ -940,6 +1085,18 @@
 
             .button-group {
                 flex-direction: column;
+                gap: 16px;
+            }
+
+            .button-group-primary {
+                width: 100%;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
 
             .btn {
@@ -1103,8 +1260,47 @@
             flex-shrink: 0;
         }
 
+        /* Reset Notification */
+        .reset-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 10000;
+        }
+
+        .reset-notification.active {
+            transform: translateX(0);
+        }
+
+        .reset-notification svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 640px) {
+            .reset-notification {
+                right: 16px;
+                left: 16px;
+                justify-content: center;
+            }
+        }
+
         /* Order Print Styles */
-        #dispensingOrderPrint {
+        #customerOrderPrint,
+        #labOrderPrint {
             display: none;
         }
 
@@ -2253,29 +2449,38 @@
         </div>
 
         <div class="button-group">
-            <button class="btn btn-primary" onclick="saveForm()">
+            <div class="button-group-primary">
+                <button class="btn btn-primary" onclick="saveForm()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                    </svg>
+                    Save
+                </button>
+                <button class="btn btn-secondary" onclick="printCustomerOrder()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                    </svg>
+                    Customer Order
+                </button>
+                <button class="btn btn-secondary" onclick="printLabOrder()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                    </svg>
+                    Lab Order
+                </button>
+                <button class="btn btn-success" onclick="downloadPDF()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Download PDF
+                </button>
+            </div>
+            <div class="button-separator"></div>
+            <button class="btn btn-danger" onclick="resetForm()">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 </svg>
-                Save
-            </button>
-            <button class="btn btn-secondary" onclick="printCustomerOrder()">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-                </svg>
-                Customer Order
-            </button>
-            <button class="btn btn-secondary" onclick="printLabOrder()">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-                </svg>
-                Lab Order
-            </button>
-            <button class="btn btn-success" onclick="downloadPDF()">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
-                Download PDF
+                Reset Form
             </button>
         </div>
     </div>
@@ -2495,6 +2700,38 @@
         </div>
     </div>
 
+    <!-- Reset Confirmation Modal -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <h2 class="modal-title">Reset Form - Are You Sure?</h2>
+            </div>
+            <div class="modal-body">
+                <strong>This action will clear all data in the form.</strong>
+                <p style="margin-top: 12px;">Before resetting, please ensure you have:</p>
+                <ul>
+                    <li>Downloaded the PDF record</li>
+                    <li>Printed any necessary orders</li>
+                    <li>Saved important information</li>
+                </ul>
+                <p style="margin-top: 12px; color: var(--danger);"><strong>This action cannot be undone!</strong></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeResetModal()">
+                    Cancel
+                </button>
+                <button class="btn btn-danger" onclick="confirmReset()">
+                    Yes, Reset Form
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Enhanced UK Optometry Dictionary
         const ukOptometryDictionary = {
@@ -2598,7 +2835,7 @@
         let activeField = null;
         let isRecording = false;
 
-        document.querySelectorAll('.smart-assist-btn').forEach(button => {
+        document.querySelectorAll('.smart-assist-btn').forEach(function(button) {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
                 const fieldId = this.getAttribute('data-field');
@@ -2634,7 +2871,7 @@
                     // Process existing text
                     if (field.value) {
                         showAIProcessing(aiProcessing);
-                        setTimeout(() => {
+                        setTimeout(function() {
                             processText(field);
                             hideAIProcessing(aiProcessing);
                             showSuggestions(fieldId);
@@ -2674,7 +2911,7 @@
                     
                     // Process with AI
                     showAIProcessing(aiProcessing);
-                    setTimeout(() => {
+                    setTimeout(function() {
                         processText(field);
                         hideAIProcessing(aiProcessing);
                         showSuggestions(activeField);
@@ -2713,13 +2950,13 @@
             activeField = null;
             
             // Remove all recording states
-            document.querySelectorAll('.smart-assist-btn.recording').forEach(btn => {
+            document.querySelectorAll('.smart-assist-btn.recording').forEach(function(btn) {
                 btn.classList.remove('recording');
             });
-            document.querySelectorAll('.smart-input.ai-active').forEach(input => {
+            document.querySelectorAll('.smart-input.ai-active').forEach(function(input) {
                 input.classList.remove('ai-active');
             });
-            document.querySelectorAll('.voice-status.active').forEach(status => {
+            document.querySelectorAll('.voice-status.active').forEach(function(status) {
                 status.classList.remove('active');
             });
         }
@@ -2743,7 +2980,9 @@
             const fieldId = input.id;
             
             // Apply general conversions
-            Object.entries(ukOptometryDictionary.conversions).forEach(([key, value]) => {
+            Object.entries(ukOptometryDictionary.conversions).forEach(function(entry) {
+                const key = entry[0];
+                const value = entry[1];
                 const regex = new RegExp('\\b' + key + '\\b', 'gi');
                 text = text.replace(regex, value);
             });
@@ -2802,20 +3041,22 @@
         }
 
         // Process text on all input
-        document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+        document.querySelectorAll('input[type="text"], textarea').forEach(function(input) {
             if (!input.id) return;
             
             input.addEventListener('input', function() {
-                const smartBtn = document.querySelector(`[data-field="${this.id}"]`);
+                const smartBtn = document.querySelector('[data-field="' + this.id + '"]');
                 if (smartBtn && smartBtn.classList.contains('active')) {
                     const aiProcessing = smartBtn.querySelector('.ai-processing');
                     showAIProcessing(aiProcessing);
                     
                     clearTimeout(this.aiTimeout);
-                    this.aiTimeout = setTimeout(() => {
-                        processText(this);
-                        hideAIProcessing(aiProcessing);
-                        showSuggestions(this.id);
+                    var self = this;
+                    var processing = aiProcessing;
+                    this.aiTimeout = setTimeout(function() {
+                        processText(self);
+                        hideAIProcessing(processing);
+                        showSuggestions(self.id);
                     }, 500);
                 }
             });
@@ -2830,7 +3071,9 @@
             
             // Get relevant suggestions
             let suggestions = [];
-            Object.entries(ukOptometryDictionary.suggestions).forEach(([key, values]) => {
+            Object.entries(ukOptometryDictionary.suggestions).forEach(function(entry) {
+                const key = entry[0];
+                const values = entry[1];
                 if (fieldId.toLowerCase().includes(key.toLowerCase())) {
                     suggestions = values;
                 }
@@ -2838,19 +3081,19 @@
             
             // Filter based on input
             if (value) {
-                suggestions = suggestions.filter(s => 
-                    s.toLowerCase().includes(value)
-                );
+                suggestions = suggestions.filter(function(s) {
+                    return s.toLowerCase().includes(value);
+                });
             }
             
             // Display suggestions
             if (suggestions.length > 0) {
                 suggestionBox.innerHTML = '';
-                suggestions.slice(0, 8).forEach(suggestion => {
+                suggestions.slice(0, 8).forEach(function(suggestion) {
                     const item = document.createElement('div');
                     item.className = 'suggestion-item';
                     item.textContent = suggestion;
-                    item.addEventListener('click', () => {
+                    item.addEventListener('click', function() {
                         field.value = suggestion;
                         saveToLocalStorage();
                         hideSuggestions();
@@ -2864,13 +3107,13 @@
         }
 
         function hideSuggestions() {
-            document.querySelectorAll('.smart-suggestions').forEach(box => {
+            document.querySelectorAll('.smart-suggestions').forEach(function(box) {
                 box.style.display = 'none';
             });
         }
 
         // Quick Actions - with AI processing
-        document.querySelectorAll('.quick-action').forEach(action => {
+        document.querySelectorAll('.quick-action').forEach(function(action) {
             action.addEventListener('click', function() {
                 const value = this.getAttribute('data-value');
                 const parentId = this.parentElement.id.replace('-quick', '');
@@ -2883,7 +3126,7 @@
                 }
                 
                 // Activate AI mode for this field
-                const smartBtn = document.querySelector(`[data-field="${parentId}"]`);
+                const smartBtn = document.querySelector('[data-field="' + parentId + '"]');
                 if (smartBtn) {
                     smartBtn.classList.add('active');
                     const smartInput = field.closest('.smart-input');
@@ -2898,7 +3141,7 @@
         });
 
         // Prescription Sign Toggles
-        document.querySelectorAll('.rx-sign').forEach(button => {
+        document.querySelectorAll('.rx-sign').forEach(function(button) {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
                 const fieldId = this.getAttribute('data-field');
@@ -2906,7 +3149,7 @@
                 const field = document.getElementById(fieldId);
                 
                 // Remove active class from sibling
-                this.parentElement.querySelectorAll('.rx-sign').forEach(btn => {
+                this.parentElement.querySelectorAll('.rx-sign').forEach(function(btn) {
                     btn.classList.remove('active', 'plus', 'minus');
                 });
                 
@@ -2928,7 +3171,7 @@
         });
 
         // Prescription formatting
-        document.querySelectorAll('.rx-input').forEach(input => {
+        document.querySelectorAll('.rx-input').forEach(function(input) {
             input.addEventListener('blur', function() {
                 let value = this.value.trim();
                 if (!value) return;
@@ -2949,7 +3192,7 @@
                         
                         // Update sign toggle
                         const signBtns = this.parentElement.querySelectorAll('.rx-sign');
-                        signBtns.forEach(btn => {
+                        signBtns.forEach(function(btn) {
                             btn.classList.remove('active', 'plus', 'minus');
                             if (btn.getAttribute('data-value') === (isNegative ? '-' : '+')) {
                                 btn.classList.add('active', isNegative ? 'minus' : 'plus');
@@ -3005,12 +3248,12 @@
                 if (distPD > 0) {
                     const monoPD_RE = (distPD / 2).toFixed(1);
                     const monoPD_LE = (distPD / 2).toFixed(1);
-                    document.getElementById('calcMonoPD').textContent = `RE: ${monoPD_RE} / LE: ${monoPD_LE}`;
+                    document.getElementById('calcMonoPD').textContent = 'RE: ' + monoPD_RE + ' / LE: ' + monoPD_LE;
                     
                     // Calculate near PD if not provided
                     if (!nearPD && distPD) {
                         const calcNearPD = (distPD - 3).toFixed(1);
-                        document.getElementById('calcNearPD').textContent = `${calcNearPD} mm`;
+                        document.getElementById('calcNearPD').textContent = calcNearPD + ' mm';
                     }
                 }
                 
@@ -3018,19 +3261,19 @@
                 if (frameA > 0 && distPD > 0) {
                     const decentration = Math.abs((frameA + frameDBL) / 2 - distPD / 2);
                     const minBlank = (frameA + (2 * decentration) + 2).toFixed(0);
-                    document.getElementById('calcBlankSize').textContent = `${minBlank} mm`;
+                    document.getElementById('calcBlankSize').textContent = minBlank + ' mm';
                     
                     // Show decentration
                     document.getElementById('calcDecentration').textContent = 
-                        `RE: ${decentration.toFixed(1)} / LE: ${decentration.toFixed(1)}`;
+                        'RE: ' + decentration.toFixed(1) + ' / LE: ' + decentration.toFixed(1);
                     
                     // Calculate prism by decentration if powers are significant
                     if (Math.abs(sphereRE) > 0.5 || Math.abs(sphereLE) > 0.5) {
                         document.getElementById('prismCalculation').style.display = 'block';
                         const prismRE = (decentration * sphereRE / 10).toFixed(2);
                         const prismLE = (decentration * sphereLE / 10).toFixed(2);
-                        document.getElementById('calcPrismRE').textContent = `${Math.abs(prismRE)}Δ ${prismRE > 0 ? 'BO' : 'BI'}`;
-                        document.getElementById('calcPrismLE').textContent = `${Math.abs(prismLE)}Δ ${prismLE > 0 ? 'BI' : 'BO'}`;
+                        document.getElementById('calcPrismRE').textContent = Math.abs(prismRE) + 'Δ ' + (prismRE > 0 ? 'BO' : 'BI');
+                        document.getElementById('calcPrismLE').textContent = Math.abs(prismLE) + 'Δ ' + (prismLE > 0 ? 'BI' : 'BO');
                     }
                 }
                 
@@ -3043,9 +3286,9 @@
                     const adjustedLE = sphereLE / (1 - (bvd / 1000) * sphereLE);
                     
                     document.getElementById('calcBvdRE').textContent = 
-                        `${adjustedRE > 0 ? '+' : ''}${adjustedRE.toFixed(2)} DS`;
+                        (adjustedRE > 0 ? '+' : '') + adjustedRE.toFixed(2) + ' DS';
                     document.getElementById('calcBvdLE').textContent = 
-                        `${adjustedLE > 0 ? '+' : ''}${adjustedLE.toFixed(2)} DS`;
+                        (adjustedLE > 0 ? '+' : '') + adjustedLE.toFixed(2) + ' DS';
                     
                     // Add alert for significant BVD adjustment
                     if (Math.abs(adjustedRE - sphereRE) > 0.25 || Math.abs(adjustedLE - sphereLE) > 0.25) {
@@ -3073,20 +3316,18 @@
         function addAlert(message, type) {
             const alertsDiv = document.getElementById('calcAlerts');
             const alert = document.createElement('div');
-            alert.className = `calc-alert ${type}`;
-            alert.innerHTML = `
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                </svg>
-                ${message}
-            `;
+            alert.className = 'calc-alert ' + type;
+            alert.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">' +
+                '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>' +
+                '</svg>' +
+                message;
             alertsDiv.appendChild(alert);
         }
 
         // Auto-save functionality
         function saveToLocalStorage() {
             const formData = {};
-            document.querySelectorAll('input, textarea, select').forEach(input => {
+            document.querySelectorAll('input, textarea, select').forEach(function(input) {
                 if (input.type === 'checkbox' || input.type === 'radio') {
                     formData[input.id || input.name] = input.checked;
                 } else {
@@ -3100,7 +3341,7 @@
             const savedData = localStorage.getItem('optometricRecordCard');
             if (savedData) {
                 const formData = JSON.parse(savedData);
-                Object.keys(formData).forEach(key => {
+                Object.keys(formData).forEach(function(key) {
                     const input = document.getElementById(key);
                     if (input) {
                         if (input.type === 'checkbox' || input.type === 'radio') {
@@ -3111,10 +3352,10 @@
                     }
                 });
                 // Update sign toggles
-                document.querySelectorAll('.rx-input').forEach(input => {
+                document.querySelectorAll('.rx-input').forEach(function(input) {
                     if (input.value) {
                         const signBtns = input.parentElement.querySelectorAll('.rx-sign');
-                        signBtns.forEach(btn => {
+                        signBtns.forEach(function(btn) {
                             btn.classList.remove('active', 'plus', 'minus');
                             if (input.value.startsWith(btn.getAttribute('data-value'))) {
                                 btn.classList.add('active');
@@ -3156,7 +3397,7 @@
             btn.classList.remove('btn-primary');
             btn.classList.add('btn-success');
             
-            setTimeout(() => {
+            setTimeout(function() {
                 btn.innerHTML = originalHTML;
                 btn.classList.remove('btn-success');
                 btn.classList.add('btn-primary');
@@ -3214,14 +3455,14 @@
                 { select: 'tint', price: 'tintPrice' }
             ];
             
-            coatings.forEach(coating => {
+            coatings.forEach(function(coating) {
                 const select = document.getElementById(coating.select);
                 const price = parseFloat(document.getElementById(coating.price).value) || 0;
                 
                 if (select.selectedIndex > 0 && price > 0) {
                     hasCoatings = true;
                     const div = document.createElement('div');
-                    div.innerHTML = `<strong>${select.options[select.selectedIndex].text}:</strong> £${price.toFixed(2)}`;
+                    div.innerHTML = '<strong>' + select.options[select.selectedIndex].text + ':</strong> £' + price.toFixed(2);
                     coatingsList.appendChild(div);
                 }
             });
@@ -3234,7 +3475,7 @@
                 if (addon && price > 0) {
                     hasCoatings = true;
                     const div = document.createElement('div');
-                    div.innerHTML = `<strong>${addon}:</strong> £${price.toFixed(2)}`;
+                    div.innerHTML = '<strong>' + addon + ':</strong> £' + price.toFixed(2);
                     coatingsList.appendChild(div);
                 }
             }
@@ -3300,25 +3541,23 @@
             const printWindow = window.open('', '_blank');
             const orderContent = document.getElementById('customerOrderPrint').innerHTML;
             
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Customer Order</title>
-                    <style>
-                        ${getOrderPrintStyles()}
-                    </style>
-                </head>
-                <body>
-                    ${orderContent}
-                </body>
-                </html>
-            `);
+            printWindow.document.write('<!DOCTYPE html>' +
+                '<html>' +
+                '<head>' +
+                '<title>Customer Order</title>' +
+                '<style>' +
+                getOrderPrintStyles() +
+                '</style>' +
+                '</head>' +
+                '<body>' +
+                orderContent +
+                '</body>' +
+                '</html>');
             
             printWindow.document.close();
             printWindow.focus();
             
-            setTimeout(() => {
+            setTimeout(function() {
                 printWindow.print();
                 printWindow.close();
             }, 250);
@@ -3410,7 +3649,7 @@
                 { select: 'tint', price: 'tintPrice' }
             ];
             
-            coatings.forEach(coating => {
+            coatings.forEach(function(coating) {
                 const select = document.getElementById(coating.select);
                 if (select.selectedIndex > 0) {
                     hasCoatings = true;
@@ -3441,25 +3680,23 @@
             const printWindow = window.open('', '_blank');
             const orderContent = document.getElementById('labOrderPrint').innerHTML;
             
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Lab Order - ${jobRef}</title>
-                    <style>
-                        ${getOrderPrintStyles()}
-                    </style>
-                </head>
-                <body>
-                    ${orderContent}
-                </body>
-                </html>
-            `);
+            printWindow.document.write('<!DOCTYPE html>' +
+                '<html>' +
+                '<head>' +
+                '<title>Lab Order - ' + jobRef + '</title>' +
+                '<style>' +
+                getOrderPrintStyles() +
+                '</style>' +
+                '</head>' +
+                '<body>' +
+                orderContent +
+                '</body>' +
+                '</html>');
             
             printWindow.document.close();
             printWindow.focus();
             
-            setTimeout(() => {
+            setTimeout(function() {
                 printWindow.print();
                 printWindow.close();
             }, 250);
@@ -3471,7 +3708,7 @@
             
             // Hide elements for PDF
             const elementsToHide = document.querySelectorAll('.smart-assist-btn, .button-group, .file-remove, .rx-sign-toggle, .quick-actions, .calculator-panel, .warning-notice, .voice-status, .ai-processing');
-            elementsToHide.forEach(el => el.style.display = 'none');
+            elementsToHide.forEach(function(el) { el.style.display = 'none'; });
             
             const patientName = document.getElementById('name').value || 'Patient';
             const date = new Date().toISOString().split('T')[0];
@@ -3482,7 +3719,7 @@
                 logging: false,
                 useCORS: true,
                 backgroundColor: '#ffffff'
-            }).then(canvas => {
+            }).then(function(canvas) {
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const imgData = canvas.toDataURL('image/png');
                 const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -3496,7 +3733,7 @@
                 pdf.save(filename);
                 
                 // Show elements again
-                elementsToHide.forEach(el => el.style.display = '');
+                elementsToHide.forEach(function(el) { el.style.display = ''; });
             });
         }
 
@@ -3504,8 +3741,8 @@
         const fileUpload = document.getElementById('fileUpload');
         const filePreview = document.getElementById('filePreview');
         const fileUploadArea = document.querySelector('.file-upload-area');
-        let uploadedFiles = [];
-
+        window.uploadedFiles = []; // Make it global for reset function
+        
         fileUpload.addEventListener('change', function(e) {
             handleFiles(e.target.files);
         });
@@ -3527,9 +3764,9 @@
         });
 
         function handleFiles(files) {
-            Array.from(files).forEach(file => {
+            Array.from(files).forEach(function(file) {
                 if (file.type.match(/image.*|application\/pdf/)) {
-                    uploadedFiles.push(file);
+                    window.uploadedFiles.push(file);
                     displayFile(file);
                 }
             });
@@ -3542,26 +3779,22 @@
             const removeBtn = document.createElement('button');
             removeBtn.className = 'file-remove';
             removeBtn.innerHTML = '×';
-            removeBtn.onclick = () => {
+            removeBtn.onclick = function() {
                 fileItem.remove();
-                uploadedFiles = uploadedFiles.filter(f => f !== file);
+                window.uploadedFiles = window.uploadedFiles.filter(function(f) { return f !== file; });
             };
             
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    fileItem.innerHTML = `
-                        <img src="${e.target.result}" alt="${file.name}" style="width: 100%; height: 150px; object-fit: cover;">
-                        <div style="padding: 8px; font-size: 12px;">${file.name}</div>
-                    `;
+                    fileItem.innerHTML = '<img src="' + e.target.result + '" alt="' + file.name + '" style="width: 100%; height: 150px; object-fit: cover;">' +
+                        '<div style="padding: 8px; font-size: 12px;">' + file.name + '</div>';
                     fileItem.appendChild(removeBtn);
                 };
                 reader.readAsDataURL(file);
             } else {
-                fileItem.innerHTML = `
-                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background: var(--gray-100); font-size: 48px;">📄</div>
-                    <div style="padding: 8px; font-size: 12px;">${file.name}</div>
-                `;
+                fileItem.innerHTML = '<div style="height: 150px; display: flex; align-items: center; justify-content: center; background: var(--gray-100); font-size: 48px;">📄</div>' +
+                    '<div style="padding: 8px; font-size: 12px;">' + file.name + '</div>';
                 fileItem.appendChild(removeBtn);
             }
             
@@ -3675,7 +3908,7 @@
                 statusText.textContent = 'Paid in full';
             } else if (deposit > 0) {
                 statusDiv.className = 'payment-status partial';
-                statusText.textContent = `Partial payment - £${balance.toFixed(2)} outstanding`;
+                statusText.textContent = 'Partial payment - £' + balance.toFixed(2) + ' outstanding';
             } else {
                 statusDiv.className = 'payment-status';
                 statusText.textContent = 'Awaiting payment';
@@ -3822,6 +4055,111 @@
             `;
         }
 
+        // Reset Form Functions
+        function resetForm() {
+            const modal = document.getElementById('resetModal');
+            modal.classList.add('active');
+        }
+
+        function closeResetModal() {
+            const modal = document.getElementById('resetModal');
+            modal.classList.remove('active');
+        }
+
+        function confirmReset() {
+            // Clear localStorage
+            localStorage.removeItem('optometricRecordCard');
+            
+            // Reset all input fields
+            document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"], input[type="number"], textarea').forEach(function(input) {
+                input.value = '';
+            });
+            
+            // Reset all select fields
+            document.querySelectorAll('select').forEach(function(select) {
+                select.selectedIndex = 0;
+            });
+            
+            // Reset checkboxes and radios
+            document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(function(input) {
+                input.checked = false;
+            });
+            
+            // Reset prescription sign toggles
+            document.querySelectorAll('.rx-sign').forEach(function(btn) {
+                btn.classList.remove('active', 'plus', 'minus');
+            });
+            
+            // Reset BVD to default
+            document.getElementById('bvd').value = '12';
+            
+            // Reset today's date
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            
+            // Clear uploaded files
+            window.uploadedFiles = [];
+            document.getElementById('filePreview').innerHTML = '';
+            
+            // Reset calculator displays
+            document.getElementById('calculatorPanel').style.display = 'none';
+            document.getElementById('bvdAdjustment').style.display = 'none';
+            document.getElementById('prismCalculation').style.display = 'none';
+            
+            // Reset financial summary
+            window.currentTotal = 0;
+            calculateTotal();
+            
+            // Reset AI states
+            document.querySelectorAll('.smart-assist-btn').forEach(function(btn) {
+                btn.classList.remove('active', 'recording');
+            });
+            document.querySelectorAll('.smart-input').forEach(function(input) {
+                input.classList.remove('ai-active');
+            });
+            document.querySelectorAll('.voice-status').forEach(function(status) {
+                status.classList.remove('active');
+            });
+            
+            // Stop any active recording
+            if (isRecording) {
+                stopRecording();
+            }
+            
+            // Hide all suggestions
+            hideSuggestions();
+            
+            // Close modal
+            closeResetModal();
+            
+            // Show success message
+            showResetSuccess();
+        }
+
+        function showResetSuccess() {
+            // Create success notification
+            const notification = document.createElement('div');
+            notification.className = 'reset-notification';
+            notification.innerHTML = '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>' +
+                '</svg>' +
+                '<span>Form has been reset successfully</span>';
+            
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(function() {
+                notification.classList.add('active');
+            }, 10);
+            
+            // Remove after 3 seconds
+            setTimeout(function() {
+                notification.classList.remove('active');
+                setTimeout(function() {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
         // Initialize
         window.addEventListener('load', function() {
             loadFromLocalStorage();
@@ -3832,8 +4170,8 @@
             document.getElementById('date').value = new Date().toISOString().split('T')[0];
             
             // Auto-save on input
-            document.querySelectorAll('input, textarea, select').forEach(input => {
-                input.addEventListener('input', () => {
+            document.querySelectorAll('input, textarea, select').forEach(function(input) {
+                input.addEventListener('input', function() {
                     clearTimeout(window.autoSaveTimer);
                     window.autoSaveTimer = setTimeout(saveToLocalStorage, 1000);
                 });
@@ -3844,12 +4182,23 @@
                 if (!e.target.closest('.smart-input')) {
                     hideSuggestions();
                 }
+                
+                // Close modal on outside click
+                if (e.target.id === 'resetModal' && e.target.classList.contains('modal-overlay')) {
+                    closeResetModal();
+                }
             });
             
             // Stop recording on ESC key
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && isRecording) {
-                    stopRecording();
+                if (e.key === 'Escape') {
+                    if (isRecording) {
+                        stopRecording();
+                    }
+                    // Close reset modal on ESC
+                    if (document.getElementById('resetModal').classList.contains('active')) {
+                        closeResetModal();
+                    }
                 }
             });
         });
